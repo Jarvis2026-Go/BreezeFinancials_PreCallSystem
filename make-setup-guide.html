@@ -7,64 +7,55 @@
     <style>
         :root {
             --teal:#14b8a6; --teal-dark:#0d9488; --teal-50:#f0fdfa; --teal-100:#ccfbf1;
-            --purple:#6d28d9; --purple-50:#f5f3ff; --purple-100:#ede9fe;
+            --purple:#6d28d9; --purple-50:#f5f3ff;
             --blue:#2563eb; --blue-50:#eff6ff;
             --amber:#d97706; --amber-50:#fffbeb;
+            --orange:#ea580c; --orange-50:#fff7ed;
             --gray-50:#f9fafb; --gray-100:#f3f4f6; --gray-200:#e5e7eb; --gray-400:#9ca3af; --gray-500:#6b7280; --gray-600:#4b5563; --gray-700:#374151; --gray-900:#111827;
         }
         * { margin:0; padding:0; box-sizing:border-box; }
         body { font-family:ui-sans-serif,system-ui,sans-serif; background:var(--gray-50); color:var(--gray-900); line-height:1.7; -webkit-font-smoothing:antialiased; }
         .container { max-width:760px; margin:0 auto; padding:40px 20px 80px; }
-
-        /* Header */
         .hero { background:linear-gradient(135deg,#1e1b4b,#4c1d95); color:#fff; padding:48px 24px; border-radius:20px; text-align:center; margin-bottom:48px; }
         .hero h1 { font-size:28px; font-weight:700; margin-bottom:8px; }
-        .hero p { font-size:15px; opacity:.8; max-width:500px; margin:0 auto; }
+        .hero p { font-size:15px; opacity:.8; max-width:520px; margin:0 auto; }
         .hero-badges { display:flex; justify-content:center; gap:12px; margin-top:20px; flex-wrap:wrap; }
         .hero-badge { background:rgba(255,255,255,.1); backdrop-filter:blur(4px); padding:6px 14px; border-radius:100px; font-size:12px; font-weight:600; }
-
-        /* Phase blocks */
         .phase { margin-bottom:48px; }
         .phase-label { display:inline-flex; align-items:center; gap:8px; padding:6px 16px; border-radius:100px 100px 100px 0; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:1px; margin-bottom:16px; color:#fff; }
         .phase-label.setup { background:var(--purple); }
         .phase-label.flow { background:var(--teal); }
+        .phase-label.hubspot { background:var(--orange); }
         .phase-label.sms { background:var(--amber); }
         .phase-label.test { background:var(--blue); }
+        .phase-label.future { background:var(--gray-700); }
         .phase h2 { font-size:22px; font-weight:700; margin-bottom:8px; }
         .phase > p { font-size:14px; color:var(--gray-600); margin-bottom:24px; }
-
-        /* Step cards */
         .step { background:#fff; border:1px solid var(--gray-200); border-radius:14px; padding:24px; margin-bottom:16px; position:relative; }
         .step-num { position:absolute; top:-10px; left:20px; background:var(--gray-900); color:#fff; width:28px; height:28px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; }
         .step h3 { font-size:16px; font-weight:700; margin-bottom:8px; padding-left:24px; }
         .step p { font-size:14px; color:var(--gray-600); margin-bottom:12px; }
         .step ul { padding-left:20px; margin-bottom:12px; }
         .step li { font-size:14px; color:var(--gray-600); margin-bottom:4px; }
-
-        /* Code blocks */
         .code-block { background:var(--gray-900); color:#e5e7eb; border-radius:10px; padding:16px 20px; font-family:ui-monospace,monospace; font-size:13px; line-height:1.6; overflow-x:auto; margin:12px 0; }
         .code-block .comment { color:#6b7280; }
         .code-block .key { color:#93c5fd; }
         .code-block .val { color:#86efac; }
         .code-block .str { color:#fcd34d; }
-
-        /* Visual flow diagram */
         .flow-diagram { background:#fff; border:2px solid var(--gray-200); border-radius:14px; padding:28px; margin:24px 0; }
         .flow-row { display:flex; align-items:center; gap:12px; margin-bottom:12px; flex-wrap:wrap; }
         .flow-row:last-child { margin-bottom:0; }
         .flow-block { background:var(--gray-50); border:1.5px solid var(--gray-200); border-radius:10px; padding:10px 16px; font-size:13px; font-weight:600; display:flex; align-items:center; gap:8px; }
         .flow-block.trigger { background:var(--purple-50); border-color:var(--purple); color:var(--purple); }
         .flow-block.action { background:var(--teal-50); border-color:var(--teal); color:var(--teal-dark); }
+        .flow-block.crm { background:var(--orange-50); border-color:var(--orange); color:var(--orange); }
         .flow-block.wait { background:var(--amber-50); border-color:var(--amber); color:var(--amber); }
         .flow-block.sms { background:#fef2f2; border-color:#ef4444; color:#dc2626; }
         .flow-arrow { color:var(--gray-300); font-size:18px; flex-shrink:0; }
-
-        /* Tips */
         .tip { background:var(--teal-50); border:1px solid var(--teal-100); border-radius:10px; padding:16px 20px; margin:16px 0; font-size:13px; color:var(--teal-dark); display:flex; gap:10px; }
         .tip svg { flex-shrink:0; margin-top:2px; }
         .warning { background:var(--amber-50); border:1px solid #fcd34d; border-radius:10px; padding:16px 20px; margin:16px 0; font-size:13px; color:#92400e; display:flex; gap:10px; }
-
-        /* Cost summary */
+        .warning svg { flex-shrink:0; margin-top:2px; }
         .cost-card { background:#fff; border:2px solid var(--teal); border-radius:14px; overflow:hidden; margin-top:32px; }
         .cost-head { background:var(--teal); color:#fff; padding:16px 24px; text-align:center; }
         .cost-head h3 { font-size:16px; font-weight:700; }
@@ -72,45 +63,67 @@
         .cost-row { display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--gray-100); font-size:14px; }
         .cost-row:last-child { border-bottom:none; font-weight:700; font-size:16px; }
         .cost-row span:last-child { color:var(--teal-dark); font-weight:700; }
+        .arch-card { background:#fff; border:2px solid var(--gray-200); border-radius:14px; padding:28px; margin:24px 0; }
+        .arch-card h3 { font-size:16px; font-weight:700; margin-bottom:16px; text-align:center; }
+        .arch-table { width:100%; border-collapse:collapse; font-size:13px; }
+        .arch-table th { text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:1px; color:var(--gray-500); padding:8px 12px; border-bottom:2px solid var(--gray-200); }
+        .arch-table td { padding:10px 12px; border-bottom:1px solid var(--gray-100); color:var(--gray-600); }
+        .arch-table td:first-child { font-weight:600; color:var(--gray-900); }
+        .phase-tag { display:inline-block; padding:2px 8px; border-radius:4px; font-size:11px; font-weight:600; }
+        .phase-tag.now { background:var(--teal-50); color:var(--teal-dark); }
+        .phase-tag.soon { background:var(--amber-50); color:var(--amber); }
+        .phase-tag.later { background:var(--gray-100); color:var(--gray-500); }
+        .divider { height:1px; background:var(--gray-200); margin:48px 0; }
     </style>
 </head>
 <body>
 <div class="container">
 
-<!-- Header -->
 <div class="hero">
-    <h1>Make.com Automation Setup</h1>
-    <p>Step-by-step guide to automate your entire pre-call email + SMS sequence for free</p>
+    <h1>Make.com + HubSpot + Microsoft 365</h1>
+    <p>Complete automation setup — from Calendly booking to pre-call reminders, all feeding into your HubSpot CRM</p>
     <div class="hero-badges">
-        <span class="hero-badge">~30 min setup</span>
-        <span class="hero-badge">Free tier</span>
-        <span class="hero-badge">No code</span>
+        <span class="hero-badge">~45 min setup</span>
+        <span class="hero-badge">Make.com free tier</span>
+        <span class="hero-badge">HubSpot as CRM</span>
+        <span class="hero-badge">Microsoft 365 email</span>
     </div>
 </div>
 
-<!-- Visual overview -->
+<!-- Architecture -->
 <div class="phase">
-    <h2>The Complete Flow</h2>
-    <p>Here's what you're building — 1 trigger, 5 actions, fully automated:</p>
+    <h2>System Architecture</h2>
+    <p>Everything flows through Make.com into HubSpot. HubSpot is the single source of truth.</p>
     <div class="flow-diagram">
         <div class="flow-row">
             <div class="flow-block trigger">📅 Calendly Booking</div>
             <span class="flow-arrow">→</span>
-            <div class="flow-block action">✉️ Send Confirmation Email</div>
-            <span class="flow-arrow">→</span>
-            <div class="flow-block action">📊 Log to Google Sheet</div>
+            <div class="flow-block" style="background:#fff;border-color:var(--purple);color:var(--purple)">⚡ Make.com</div>
         </div>
-        <div class="flow-row">
-            <div class="flow-block wait">⏳ Wait until 24hr before</div>
-            <span class="flow-arrow">→</span>
-            <div class="flow-block action">✉️ Send Reminder Email</div>
+        <div class="flow-row" style="padding-left:40px">
+            <span class="flow-arrow">↓</span>
         </div>
-        <div class="flow-row">
-            <div class="flow-block wait">⏳ Wait until 2-3hr before</div>
+        <div class="flow-row" style="padding-left:40px;gap:16px">
+            <div class="flow-block crm">🟠 HubSpot — Create/Update Contact + Deal</div>
+        </div>
+        <div class="flow-row" style="padding-left:40px;gap:16px">
+            <div class="flow-block action">✉️ Microsoft 365 — Send Confirmation (no-reply@)</div>
+        </div>
+        <div class="flow-row" style="padding-left:40px;margin-top:16px">
+            <span class="flow-arrow" style="color:var(--amber)">⏳</span>
+            <span style="font-size:13px;color:var(--amber);font-weight:600">Scenario B runs every hour, checks HubSpot for upcoming calls:</span>
+        </div>
+        <div class="flow-row" style="padding-left:40px">
+            <div class="flow-block wait">24hr before</div>
             <span class="flow-arrow">→</span>
-            <div class="flow-block action">✉️ Send Day-Of Email</div>
+            <div class="flow-block action">✉️ Reminder Email (no-reply@)</div>
+        </div>
+        <div class="flow-row" style="padding-left:40px">
+            <div class="flow-block wait">2-3hr before</div>
             <span class="flow-arrow">→</span>
-            <div class="flow-block sms">📱 Send SMS (optional)</div>
+            <div class="flow-block action">✉️ Day-Of Email (rodrigo@)</div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-block sms">📱 SMS (Twilio)</div>
         </div>
     </div>
 </div>
@@ -119,9 +132,9 @@
 <!-- PHASE 1: ACCOUNTS -->
 <!-- ======================== -->
 <div class="phase">
-    <div class="phase-label setup">Phase 1</div>
-    <h2>Create Your Accounts</h2>
-    <p>You need 3 free accounts before building the automation.</p>
+    <div class="phase-label setup">Phase 1 — Accounts</div>
+    <h2>Connect Your Services</h2>
+    <p>You already have HubSpot and Microsoft 365. You just need Make.com.</p>
 
     <div class="step">
         <div class="step-num">1</div>
@@ -129,252 +142,364 @@
         <p>Go to <strong>make.com</strong> and create a free account.</p>
         <ul>
             <li>Free tier: <strong>1,000 operations/month</strong></li>
-            <li>Each booking uses ~5-6 operations (trigger + emails + sheet + SMS)</li>
-            <li>That's ~160-200 bookings/month on the free plan</li>
+            <li>Each booking uses ~6 operations → ~160 bookings/month free</li>
         </ul>
     </div>
 
     <div class="step">
         <div class="step-num">2</div>
-        <h3>Connect Calendly</h3>
-        <p>In Make.com, you'll connect your Calendly account via API key:</p>
+        <h3>Get your Calendly API token</h3>
         <ul>
             <li>Go to <strong>Calendly → Integrations → API & Webhooks</strong></li>
-            <li>Copy your <strong>Personal Access Token</strong></li>
-            <li>In Make.com, when you add a Calendly module, paste this token</li>
+            <li>Generate a <strong>Personal Access Token</strong></li>
+            <li>Copy and save it — you'll paste this into Make.com</li>
         </ul>
     </div>
 
     <div class="step">
         <div class="step-num">3</div>
-        <h3>Connect Gmail (for sending emails)</h3>
-        <p>Make.com will send emails from your Gmail/Google Workspace account:</p>
+        <h3>Get your HubSpot API access</h3>
         <ul>
-            <li>When adding a Gmail module, Make.com prompts you to sign in</li>
-            <li>Authorize it to send emails on your behalf</li>
-            <li>Emails come from <strong>rodrigo@breezefinancials.com</strong> (your real address)</li>
+            <li>In Make.com, when you add a HubSpot module, it uses <strong>OAuth</strong></li>
+            <li>You'll sign into your HubSpot account and authorize Make.com</li>
+            <li>No API key needed — just click "Connect" and sign in</li>
         </ul>
         <div class="tip">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-            <span>Use Google Workspace (not personal Gmail) so emails come from your business domain. This dramatically improves deliverability.</span>
+            <span>Before connecting, create these <strong>custom contact properties</strong> in HubSpot (Settings → Properties → Create property): <strong>Industry</strong>, <strong>Monthly Revenue</strong>, <strong>Pain Points</strong>, <strong>Call Time</strong>, <strong>Referral Source</strong>, <strong>Call Status</strong> (dropdown: Booked / Reminded / Showed / No-Show)</span>
         </div>
     </div>
 
     <div class="step">
         <div class="step-num">4</div>
-        <h3>Create a Google Sheet for logging</h3>
-        <p>Create a new Google Sheet called <strong>"Breeze Leads"</strong> with these column headers in Row 1:</p>
-        <div class="code-block">
-<span class="key">A1:</span> <span class="val">Date Booked</span>
-<span class="key">B1:</span> <span class="val">Name</span>
-<span class="key">C1:</span> <span class="val">Email</span>
-<span class="key">D1:</span> <span class="val">Call Time</span>
-<span class="key">E1:</span> <span class="val">Status</span>
-<span class="key">F1:</span> <span class="val">Notes</span>
+        <h3>Connect Microsoft 365 email</h3>
+        <ul>
+            <li>In Make.com, add a <strong>"Microsoft 365 Email"</strong> module</li>
+            <li>Click <strong>"Create a connection"</strong> → sign in with your Microsoft account</li>
+            <li>Authorize Make.com to send email on behalf of <strong>no-reply@breezefinancials.com</strong></li>
+        </ul>
+        <div class="warning">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4M12 17h.01"/></svg>
+            <span><strong>You'll need to sign in as no-reply@breezefinancials.com</strong> (or an admin who can delegate send-as permission). If you can't sign in as that account, use the SMTP module instead with server: <code>smtp.office365.com</code>, port: <code>587</code>, security: <code>STARTTLS</code>.</span>
         </div>
     </div>
 </div>
 
 <!-- ======================== -->
-<!-- PHASE 2: BUILD THE FLOW -->
+<!-- PHASE 2: SCENARIO A -->
 <!-- ======================== -->
 <div class="phase">
-    <div class="phase-label flow">Phase 2</div>
-    <h2>Build the Automation Scenario</h2>
-    <p>In Make.com, a "Scenario" is your automation flow. Here's how to build it step by step.</p>
+    <div class="phase-label flow">Phase 2 — Scenario A</div>
+    <h2>Instant Booking Flow</h2>
+    <p>This scenario fires the moment someone books. It creates the HubSpot contact, creates a deal, and sends the confirmation email.</p>
 
     <div class="step">
         <div class="step-num">5</div>
-        <h3>Create a new Scenario</h3>
+        <h3>Create Scenario A — "New Booking"</h3>
         <ul>
-            <li>Click <strong>"Create a new scenario"</strong> from your Make.com dashboard</li>
-            <li>You'll see a blank canvas with a "+" icon in the center</li>
+            <li>Click <strong>"Create a new scenario"</strong></li>
+            <li>Name it <strong>"Breeze — New Booking"</strong></li>
         </ul>
     </div>
 
     <div class="step">
         <div class="step-num">6</div>
-        <h3>Add trigger: Calendly → Watch Events</h3>
+        <h3>Module 1: Calendly → Watch Events</h3>
         <ul>
-            <li>Click the "+" → search for <strong>"Calendly"</strong></li>
-            <li>Select <strong>"Watch Events"</strong> (this fires when someone books)</li>
-            <li>Connect your Calendly account (paste the API token from Step 2)</li>
-            <li>Set scope to <strong>"User"</strong> and select your event type</li>
+            <li>Add module → search <strong>"Calendly"</strong> → select <strong>"Watch Events"</strong></li>
+            <li>Connect your Calendly account (paste API token)</li>
+            <li>Scope: <strong>User</strong>, Event type: your discovery call</li>
+            <li>Click <strong>"Run once"</strong> to pull sample data</li>
         </ul>
-        <div class="tip">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-            <span>Run the scenario once manually first — Make.com will pull a sample booking so you can see the available data fields (name, email, event time, etc.)</span>
-        </div>
     </div>
 
     <div class="step">
         <div class="step-num">7</div>
-        <h3>Add action: Gmail → Send Email (Confirmation)</h3>
+        <h3>Module 2: HubSpot → Create/Update Contact</h3>
         <ul>
-            <li>Click "+" after the Calendly module → search <strong>"Gmail"</strong></li>
-            <li>Select <strong>"Send an Email"</strong></li>
-            <li>Configure:</li>
+            <li>Add module → search <strong>"HubSpot CRM"</strong> → select <strong>"Create or Update a Contact"</strong></li>
+            <li>Map the fields:</li>
         </ul>
         <div class="code-block">
-<span class="key">To:</span>      <span class="val">{{Calendly invitee email}}</span>
-<span class="key">Subject:</span> <span class="str">You're booked — here's what to expect on our call</span>
-<span class="key">Body:</span>    <span class="comment">(paste Email 1 HTML from emails.html)</span>
-<span class="comment">         Replace {{first_name}} with the Calendly "invitee name" field</span>
-<span class="comment">         Replace {{date_and_time}} with the Calendly "event start time" field</span>
-<span class="comment">         Replace {{zoom_link}} with the Calendly "location" field</span>
+<span class="key">Email:</span>           <span class="val">{{Calendly.invitee_email}}</span>
+<span class="key">First Name:</span>      <span class="val">{{Calendly.invitee_first_name}}</span>
+<span class="key">Last Name:</span>       <span class="val">{{Calendly.invitee_last_name}}</span>
+<span class="key">Phone:</span>           <span class="val">{{Calendly.invitee_phone}}</span>  <span class="comment">(from questions)</span>
+<span class="key">Company:</span>         <span class="val">{{Calendly.answer_1}}</span>  <span class="comment">(business name from intake)</span>
+<span class="key">Industry:</span>        <span class="val">{{Calendly.answer_2}}</span>  <span class="comment">(custom property)</span>
+<span class="key">Monthly Revenue:</span> <span class="val">{{Calendly.answer_3}}</span>  <span class="comment">(custom property)</span>
+<span class="key">Pain Points:</span>     <span class="val">{{Calendly.answer_4}}</span>  <span class="comment">(custom property)</span>
+<span class="key">Call Time:</span>       <span class="val">{{Calendly.event_start_time}}</span>  <span class="comment">(custom property)</span>
+<span class="key">Call Status:</span>     <span class="str">Booked</span>  <span class="comment">(custom property)</span>
+<span class="key">Lead Source:</span>     <span class="str">Website — Discovery Call</span>
         </div>
         <div class="tip">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-            <span>Toggle "HTML content" to ON in the Gmail module. Then paste the full email HTML. Map the Calendly fields by clicking the field and selecting from the dropdown.</span>
+            <span><strong>"Create or Update"</strong> is key — if this person already exists in HubSpot (e.g., they submitted the lead magnet form first), it updates them instead of creating a duplicate. HubSpot deduplicates on email address.</span>
         </div>
     </div>
 
     <div class="step">
         <div class="step-num">8</div>
-        <h3>Add action: Google Sheets → Add Row</h3>
+        <h3>Module 3: HubSpot → Create Deal</h3>
         <ul>
-            <li>Click "+" → search <strong>"Google Sheets"</strong></li>
-            <li>Select <strong>"Add a Row"</strong></li>
-            <li>Select your "Breeze Leads" spreadsheet</li>
-            <li>Map columns:</li>
+            <li>Add module → <strong>"HubSpot CRM"</strong> → <strong>"Create a Deal"</strong></li>
+            <li>Map:</li>
         </ul>
         <div class="code-block">
-<span class="key">Date Booked:</span> <span class="val">{{now}}</span>
-<span class="key">Name:</span>        <span class="val">{{Calendly invitee name}}</span>
-<span class="key">Email:</span>       <span class="val">{{Calendly invitee email}}</span>
-<span class="key">Call Time:</span>   <span class="val">{{Calendly event start time}}</span>
-<span class="key">Status:</span>      <span class="str">Booked</span>
-<span class="key">Notes:</span>       <span class="val">{{Calendly invitee questions/answers}}</span>
+<span class="key">Deal Name:</span>      <span class="val">Discovery Call — {{Calendly.invitee_name}}</span>
+<span class="key">Pipeline:</span>       <span class="str">Sales Pipeline</span>  <span class="comment">(your default pipeline)</span>
+<span class="key">Deal Stage:</span>     <span class="str">Discovery Booked</span>
+<span class="key">Associated Contact:</span> <span class="val">{{HubSpot contact ID from Module 2}}</span>
+<span class="key">Close Date:</span>     <span class="val">{{Calendly.event_start_time}}</span>
+        </div>
+        <div class="tip">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+            <span>Create these <strong>deal stages</strong> in HubSpot first (Settings → Deals → Pipelines): <strong>Discovery Booked → Discovery Completed → Proposal Sent → Closed Won → Closed Lost</strong></span>
         </div>
     </div>
 
     <div class="step">
         <div class="step-num">9</div>
-        <h3>Add: Sleep → Wait until 24 hours before</h3>
+        <h3>Module 4: Microsoft 365 → Send Confirmation Email</h3>
         <ul>
-            <li>Click "+" → search <strong>"Sleep"</strong> (built-in Make.com tool)</li>
-            <li>Select <strong>"Sleep"</strong></li>
-            <li>Set the delay using a formula:</li>
+            <li>Add module → <strong>"Microsoft 365 Email"</strong> → <strong>"Send an Email"</strong></li>
+            <li>Configure:</li>
         </ul>
         <div class="code-block">
-<span class="comment">/* Calculate: event time minus 24 hours minus current time */</span>
-<span class="key">Delay:</span> <span class="val">{{dateDifference(addHours(Calendly.event_start; -24); now; "minutes")}}</span>
-        </div>
-        <div class="warning">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4M12 17h.01"/></svg>
-            <span><strong>Important:</strong> Make.com free tier has a max execution time of 5 minutes. For longer delays, use the <strong>"Schedule"</strong> approach instead: create a separate scenario that runs every hour, checks the Google Sheet for upcoming calls, and sends the email if the call is within 24 hours. This is more reliable anyway.</span>
+<span class="key">From:</span>      <span class="val">no-reply@breezefinancials.com</span>
+<span class="key">To:</span>        <span class="val">{{Calendly.invitee_email}}</span>
+<span class="key">Subject:</span>   <span class="str">You're booked — here's what to expect on our call</span>
+<span class="key">Body type:</span> <span class="str">HTML</span>
+<span class="key">Body:</span>      <span class="comment">(paste Email 1 from emails.html)</span>
+<span class="comment">             Map {{first_name}}, {{date_and_time}}, {{zoom_link}} to Calendly fields</span>
         </div>
     </div>
 
     <div class="step">
         <div class="step-num">10</div>
-        <h3>Better approach: Two separate scenarios</h3>
-        <p>Instead of one long scenario with sleeps, build <strong>two scenarios</strong>:</p>
-        <p><strong>Scenario A — "New Booking" (runs on Calendly trigger):</strong></p>
+        <h3>Set Scenario A scheduling</h3>
         <ul>
-            <li>Calendly Watch Events → Send Confirmation Email → Log to Google Sheet</li>
-            <li>This runs instantly when someone books</li>
+            <li>Click the clock icon at bottom-left of the scenario</li>
+            <li>Set to <strong>"Immediately"</strong> (as data arrives)</li>
+            <li>Turn the scenario <strong>ON</strong></li>
         </ul>
-        <p style="margin-top:16px"><strong>Scenario B — "Pre-Call Reminders" (runs every hour on a schedule):</strong></p>
-        <ul>
-            <li>Trigger: <strong>Schedule → Every 1 hour</strong></li>
-            <li>Action: <strong>Google Sheets → Search Rows</strong> where Call Time is in the future</li>
-            <li>Filter: If call is <strong>23-25 hours from now</strong> → Send Email 2 (24hr reminder)</li>
-            <li>Filter: If call is <strong>2-3 hours from now</strong> → Send Email 3 + SMS</li>
-        </ul>
-        <div class="tip">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-            <span>This is the production-grade approach. It handles rescheduling (the Google Sheet always has the latest time), never times out, and you can see/debug every step in the sheet.</span>
-        </div>
     </div>
 </div>
 
 <!-- ======================== -->
-<!-- PHASE 3: SMS -->
+<!-- PHASE 3: SCENARIO B -->
 <!-- ======================== -->
 <div class="phase">
-    <div class="phase-label sms">Phase 3 (Optional)</div>
-    <h2>Add SMS Reminders via Twilio</h2>
-    <p>Text message 2-3 hours before the call. This is the highest-impact no-show reducer.</p>
+    <div class="phase-label hubspot">Phase 3 — Scenario B</div>
+    <h2>Pre-Call Reminders</h2>
+    <p>This scenario runs every hour, checks HubSpot for upcoming calls, and sends reminders at the right time.</p>
 
     <div class="step">
         <div class="step-num">11</div>
-        <h3>Create a Twilio account</h3>
+        <h3>Create Scenario B — "Pre-Call Reminders"</h3>
         <ul>
-            <li>Go to <strong>twilio.com</strong> → Sign up (free trial includes $15 credit)</li>
-            <li>Buy a phone number (~$1.15/month) — this is the number texts come from</li>
-            <li>Note your <strong>Account SID</strong>, <strong>Auth Token</strong>, and <strong>phone number</strong></li>
+            <li>Create a new scenario, name it <strong>"Breeze — Pre-Call Reminders"</strong></li>
         </ul>
     </div>
 
     <div class="step">
         <div class="step-num">12</div>
-        <h3>Add Twilio to Scenario B</h3>
+        <h3>Module 1: Schedule trigger → Every 1 hour</h3>
         <ul>
-            <li>In your "Pre-Call Reminders" scenario, after Email 3</li>
-            <li>Add module: <strong>Twilio → Send an SMS</strong></li>
-            <li>Connect your Twilio account</li>
-            <li>Configure:</li>
+            <li>Add module → search <strong>"Schedule"</strong> (built-in)</li>
+            <li>Set interval to <strong>60 minutes</strong></li>
         </ul>
-        <div class="code-block">
-<span class="key">From:</span> <span class="val">{{your Twilio phone number}}</span>
-<span class="key">To:</span>   <span class="val">{{phone from Google Sheet}}</span>
-<span class="key">Body:</span>
-<span class="str">Hey {{name}} — your call with Breeze Financials is in 2 hours ({{time}}).</span>
-<span class="str"></span>
-<span class="str">Join here: {{zoom_link}}</span>
-<span class="str"></span>
-<span class="str">Need to reschedule? No stress: {{reschedule_link}}</span>
-        </div>
-        <div class="tip">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-            <span>Only send SMS if the person provided a phone number. Add a <strong>Filter</strong> before the Twilio module: "Phone is not empty."</span>
-        </div>
     </div>
-</div>
-
-<!-- ======================== -->
-<!-- PHASE 4: TEST -->
-<!-- ======================== -->
-<div class="phase">
-    <div class="phase-label test">Phase 4</div>
-    <h2>Test Everything</h2>
 
     <div class="step">
         <div class="step-num">13</div>
-        <h3>Test Scenario A (instant confirmation)</h3>
+        <h3>Module 2: HubSpot → Search Contacts</h3>
         <ul>
-            <li>Turn on Scenario A</li>
-            <li>Book a test appointment through your own Calendly link using a personal email</li>
-            <li>Check: Did you receive the confirmation email? Did a row appear in Google Sheets?</li>
-            <li>If not: click "Run once" in Make.com to see which step failed</li>
+            <li>Add module → <strong>"HubSpot CRM"</strong> → <strong>"Search Contacts"</strong></li>
+            <li>Filter: <strong>Call Status = "Booked"</strong> AND <strong>Call Time is in the future</strong></li>
+            <li>This returns all contacts with upcoming calls</li>
         </ul>
     </div>
 
     <div class="step">
         <div class="step-num">14</div>
-        <h3>Test Scenario B (reminders)</h3>
+        <h3>Add Router → two paths</h3>
         <ul>
-            <li>Add a test row to your Google Sheet with a call time 2 hours from now</li>
-            <li>Turn on Scenario B and click "Run once"</li>
-            <li>Check: Did you receive the day-of email and/or SMS?</li>
-            <li>Adjust the time filters if needed</li>
+            <li>Add a <strong>Router</strong> module (built-in) after the search</li>
+            <li><strong>Path 1 — 24hr reminder:</strong> Filter where Call Time is 23-25 hours from now</li>
+            <li><strong>Path 2 — Day-of reminder:</strong> Filter where Call Time is 2-3 hours from now</li>
         </ul>
+        <div class="code-block">
+<span class="comment">/* Path 1 filter (24hr reminder) */</span>
+<span class="key">Condition:</span> <span class="val">Call Time</span> <span class="str">is after</span> <span class="val">{{addHours(now; 23)}}</span>
+           <span class="str">AND is before</span> <span class="val">{{addHours(now; 25)}}</span>
+           <span class="str">AND Call Status = "Booked"</span>
+
+<span class="comment">/* Path 2 filter (day-of reminder) */</span>
+<span class="key">Condition:</span> <span class="val">Call Time</span> <span class="str">is after</span> <span class="val">{{addHours(now; 2)}}</span>
+           <span class="str">AND is before</span> <span class="val">{{addHours(now; 3)}}</span>
+           <span class="str">AND Call Status = "Booked"</span>
+        </div>
     </div>
 
     <div class="step">
         <div class="step-num">15</div>
-        <h3>Go live</h3>
+        <h3>Path 1 → Send 24hr Reminder Email</h3>
         <ul>
-            <li>Set Scenario A scheduling to <strong>"Immediately"</strong> (runs as data arrives)</li>
-            <li>Set Scenario B scheduling to <strong>"Every 1 hour"</strong></li>
-            <li>Turn both scenarios ON</li>
-            <li>Monitor your Google Sheet for the first few real bookings</li>
+            <li>Add <strong>Microsoft 365 Email → Send</strong></li>
+            <li>From: <strong>no-reply@breezefinancials.com</strong></li>
+            <li>Subject: <strong>"Tomorrow: your free financial review with Breeze"</strong></li>
+            <li>Body: paste Email 2 from emails.html, map HubSpot contact fields</li>
+        </ul>
+        <p>Then add:</p>
+        <ul>
+            <li><strong>HubSpot → Update Contact</strong>: set Call Status to <strong>"Reminded"</strong></li>
+            <li>This prevents sending the 24hr reminder twice</li>
+        </ul>
+    </div>
+
+    <div class="step">
+        <div class="step-num">16</div>
+        <h3>Path 2 → Send Day-Of Email + SMS</h3>
+        <ul>
+            <li>Add <strong>Microsoft 365 Email → Send</strong></li>
+            <li>From: <strong>rodrigo@breezefinancials.com</strong> (this one should feel personal)</li>
+            <li>Subject: <strong>"See you at {{time}} — here's your Zoom link"</strong></li>
+            <li>Body: paste Email 3 from emails.html</li>
+        </ul>
+        <p>Then optionally add Twilio SMS (see Phase 4).</p>
+    </div>
+
+    <div class="step">
+        <div class="step-num">17</div>
+        <h3>Set Scenario B scheduling</h3>
+        <ul>
+            <li>Set to run <strong>every 60 minutes</strong></li>
+            <li>Turn the scenario <strong>ON</strong></li>
         </ul>
         <div class="tip">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-            <span>Make.com shows execution history for every scenario run. If something fails, you'll see exactly which step broke and why. Check this weekly for the first month.</span>
+            <span><strong>Why this works with rescheduling:</strong> If someone reschedules in Calendly, Scenario A fires again with the new time, updating the HubSpot contact's Call Time. When Scenario B checks next hour, it uses the new time automatically. No duplicate reminders.</span>
         </div>
+    </div>
+</div>
+
+<!-- ======================== -->
+<!-- PHASE 4: SMS -->
+<!-- ======================== -->
+<div class="phase">
+    <div class="phase-label sms">Phase 4 — SMS (Optional)</div>
+    <h2>Add Text Message Reminder</h2>
+    <p>A text 2-3 hours before the call is the single highest-impact no-show reducer.</p>
+
+    <div class="step">
+        <div class="step-num">18</div>
+        <h3>Set up Twilio</h3>
+        <ul>
+            <li>Sign up at <strong>twilio.com</strong> (free trial = $15 credit)</li>
+            <li>Buy a phone number (<strong>~$1.15/month</strong>)</li>
+            <li>Note your Account SID, Auth Token, and phone number</li>
+        </ul>
+    </div>
+
+    <div class="step">
+        <div class="step-num">19</div>
+        <h3>Add to Scenario B, Path 2</h3>
+        <ul>
+            <li>After the day-of email, add: <strong>Twilio → Send SMS</strong></li>
+            <li>Add a <strong>Filter</strong> before it: "Phone is not empty"</li>
+            <li>Configure:</li>
+        </ul>
+        <div class="code-block">
+<span class="key">From:</span> <span class="val">{{your Twilio number}}</span>
+<span class="key">To:</span>   <span class="val">{{HubSpot contact phone}}</span>
+<span class="key">Body:</span>
+
+<span class="str">Hey {{first_name}} — your call with Breeze</span>
+<span class="str">Financials is in 2 hours ({{time}}).</span>
+<span class="str"></span>
+<span class="str">Join here: {{zoom_link}}</span>
+<span class="str"></span>
+<span class="str">Need to reschedule? No stress:</span>
+<span class="str">{{reschedule_link}}</span>
+        </div>
+    </div>
+</div>
+
+<!-- ======================== -->
+<!-- PHASE 5: TEST -->
+<!-- ======================== -->
+<div class="phase">
+    <div class="phase-label test">Phase 5 — Test & Go Live</div>
+    <h2>Test Everything</h2>
+
+    <div class="step">
+        <div class="step-num">20</div>
+        <h3>Test Scenario A</h3>
+        <ul>
+            <li>Turn on Scenario A</li>
+            <li>Book a test appointment with your personal email</li>
+            <li>Check: Did HubSpot get a new contact with all fields populated?</li>
+            <li>Check: Did a deal appear in your pipeline at "Discovery Booked"?</li>
+            <li>Check: Did you receive the confirmation email from no-reply@?</li>
+        </ul>
+    </div>
+
+    <div class="step">
+        <div class="step-num">21</div>
+        <h3>Test Scenario B</h3>
+        <ul>
+            <li>In HubSpot, set the test contact's Call Time to 2.5 hours from now</li>
+            <li>Set Call Status to "Booked"</li>
+            <li>Turn on Scenario B and click "Run once"</li>
+            <li>Check: Did you receive the day-of email from rodrigo@?</li>
+            <li>Check: Did you receive the SMS (if Twilio is configured)?</li>
+        </ul>
+    </div>
+
+    <div class="step">
+        <div class="step-num">22</div>
+        <h3>Go live</h3>
+        <ul>
+            <li>Scenario A: set to <strong>"Immediately"</strong></li>
+            <li>Scenario B: set to <strong>every 60 minutes</strong></li>
+            <li>Both scenarios <strong>ON</strong></li>
+            <li>Monitor HubSpot + Make.com execution history for the first week</li>
+        </ul>
+    </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ======================== -->
+<!-- FUTURE ROADMAP -->
+<!-- ======================== -->
+<div class="phase">
+    <div class="phase-label future">Growth Roadmap</div>
+    <h2>What This Scales To</h2>
+    <p>Same architecture, more scenarios — each one a simple add-on:</p>
+
+    <div class="arch-card">
+        <h3>Phased Automation Roadmap</h3>
+        <table class="arch-table">
+            <thead><tr><th>Phase</th><th>What It Does</th><th>Trigger</th><th>When</th></tr></thead>
+            <tbody>
+                <tr><td>Pre-Call Sequence</td><td>Confirmation + 24hr + day-of emails + SMS</td><td>Calendly booking</td><td><span class="phase-tag now">Now</span></td></tr>
+                <tr><td>Post-Call Follow-Up</td><td>"Great talking today" email with next steps</td><td>Deal stage → "Discovery Completed"</td><td><span class="phase-tag soon">Month 2</span></td></tr>
+                <tr><td>No-Show Recovery</td><td>"We missed you" email + reschedule link</td><td>Call Status still "Reminded" after call time passes</td><td><span class="phase-tag soon">Month 2</span></td></tr>
+                <tr><td>Proposal Follow-Up</td><td>Nudge 3 days after proposal sent if no response</td><td>Deal stage = "Proposal Sent" for 3+ days</td><td><span class="phase-tag soon">Month 3</span></td></tr>
+                <tr><td>Lead Magnet Delivery</td><td>Send Financial Health Snapshot PDF</td><td>Website email capture form</td><td><span class="phase-tag soon">Month 3</span></td></tr>
+                <tr><td>Monthly CFO Newsletter</td><td>Tips, insights, case studies</td><td>Scheduled monthly</td><td><span class="phase-tag later">Month 4+</span></td></tr>
+                <tr><td>Client Onboarding</td><td>Welcome sequence + document collection</td><td>Deal stage → "Closed Won"</td><td><span class="phase-tag later">Month 4+</span></td></tr>
+                <tr><td>HubSpot Native Workflows</td><td>Replace Make.com entirely</td><td>HubSpot Starter ($20/mo)</td><td><span class="phase-tag later">When ready</span></td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="tip">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+        <span><strong>The rule:</strong> Every new automation reads from or writes to HubSpot. If it doesn't touch HubSpot, it doesn't belong. This keeps your system clean as you add phases.</span>
     </div>
 </div>
 
@@ -383,11 +508,11 @@
     <div class="cost-head"><h3>Monthly Cost Summary</h3></div>
     <div class="cost-body">
         <div class="cost-row"><span>Make.com (1,000 ops/month)</span><span>Free</span></div>
-        <div class="cost-row"><span>Gmail / Google Workspace</span><span>Already have</span></div>
-        <div class="cost-row"><span>Google Sheets</span><span>Free</span></div>
+        <div class="cost-row"><span>HubSpot CRM</span><span>Already have</span></div>
+        <div class="cost-row"><span>Microsoft 365 (no-reply@ + rodrigo@)</span><span>Already have</span></div>
         <div class="cost-row"><span>Twilio phone number</span><span>$1.15/mo</span></div>
-        <div class="cost-row"><span>Twilio SMS (10 bookings × $0.01)</span><span>~$0.10/mo</span></div>
-        <div class="cost-row"><span>Total</span><span>~$1.25/month</span></div>
+        <div class="cost-row"><span>Twilio SMS (~10 bookings)</span><span>~$0.10/mo</span></div>
+        <div class="cost-row"><span>Total new cost</span><span>~$1.25/month</span></div>
     </div>
 </div>
 

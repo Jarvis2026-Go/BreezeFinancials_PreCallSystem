@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Power Automate Setup Guide — Breeze Financials</title>
+    <style>
+        :root {
+            --ms-blue:#0078d4; --ms-blue-dark:#106ebe; --ms-blue-50:#f0f6ff; --ms-blue-100:#d0e4ff;
+            --teal:#14b8a6; --teal-dark:#0d9488; --teal-50:#f0fdfa; --teal-100:#ccfbf1;
+            --orange:#ea580c; --orange-50:#fff7ed;
+            --amber:#d97706; --amber-50:#fffbeb;
+            --green:#16a34a; --green-50:#f0fdf4;
+            --gray-50:#f9fafb; --gray-100:#f3f4f6; --gray-200:#e5e7eb; --gray-400:#9ca3af; --gray-500:#6b7280; --gray-600:#4b5563; --gray-700:#374151; --gray-900:#111827;
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:ui-sans-serif,system-ui,sans-serif; background:var(--gray-50); color:var(--gray-900); line-height:1.7; -webkit-font-smoothing:antialiased; }
+        .container { max-width:760px; margin:0 auto; padding:40px 20px 80px; }
+        .hero { background:linear-gradient(135deg,#0078d4,#106ebe 50%,#005a9e); color:#fff; padding:48px 24px; border-radius:20px; text-align:center; margin-bottom:48px; position:relative; overflow:hidden; }
+        .hero::before { content:''; position:absolute; top:-40%; right:-15%; width:300px; height:300px; background:radial-gradient(circle,rgba(255,255,255,.08),transparent 70%); border-radius:50%; }
+        .hero h1 { font-size:28px; font-weight:700; margin-bottom:8px; }
+        .hero p { font-size:15px; opacity:.85; max-width:520px; margin:0 auto; }
+        .hero-badges { display:flex; justify-content:center; gap:12px; margin-top:20px; flex-wrap:wrap; }
+        .hero-badge { background:rgba(255,255,255,.12); backdrop-filter:blur(4px); padding:6px 14px; border-radius:100px; font-size:12px; font-weight:600; }
+        .phase { margin-bottom:48px; }
+        .phase-label { display:inline-flex; align-items:center; gap:8px; padding:6px 16px; border-radius:100px 100px 100px 0; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:1px; margin-bottom:16px; color:#fff; }
+        .phase-label.setup { background:var(--ms-blue); }
+        .phase-label.flow-a { background:var(--teal); }
+        .phase-label.flow-b { background:var(--orange); }
+        .phase-label.sms { background:var(--amber); }
+        .phase-label.test { background:var(--green); }
+        .phase-label.future { background:var(--gray-700); }
+        .phase h2 { font-size:22px; font-weight:700; margin-bottom:8px; }
+        .phase > p { font-size:14px; color:var(--gray-600); margin-bottom:24px; }
+        .step { background:#fff; border:1px solid var(--gray-200); border-radius:14px; padding:24px; margin-bottom:16px; position:relative; }
+        .step-num { position:absolute; top:-10px; left:20px; background:var(--ms-blue); color:#fff; width:28px; height:28px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; }
+        .step h3 { font-size:16px; font-weight:700; margin-bottom:8px; padding-left:24px; }
+        .step p { font-size:14px; color:var(--gray-600); margin-bottom:12px; }
+        .step ul { padding-left:20px; margin-bottom:12px; }
+        .step li { font-size:14px; color:var(--gray-600); margin-bottom:6px; }
+        .code-block { background:var(--gray-900); color:#e5e7eb; border-radius:10px; padding:16px 20px; font-family:ui-monospace,monospace; font-size:13px; line-height:1.6; overflow-x:auto; margin:12px 0; }
+        .code-block .comment { color:#6b7280; }
+        .code-block .key { color:#93c5fd; }
+        .code-block .val { color:#86efac; }
+        .code-block .str { color:#fcd34d; }
+        .flow-diagram { background:#fff; border:2px solid var(--gray-200); border-radius:14px; padding:28px; margin:24px 0; }
+        .flow-row { display:flex; align-items:center; gap:12px; margin-bottom:12px; flex-wrap:wrap; }
+        .flow-row:last-child { margin-bottom:0; }
+        .flow-block { background:var(--gray-50); border:1.5px solid var(--gray-200); border-radius:10px; padding:10px 16px; font-size:13px; font-weight:600; display:flex; align-items:center; gap:8px; }
+        .flow-block.trigger { background:var(--ms-blue-50); border-color:var(--ms-blue); color:var(--ms-blue); }
+        .flow-block.action { background:var(--teal-50); border-color:var(--teal); color:var(--teal-dark); }
+        .flow-block.crm { background:var(--orange-50); border-color:var(--orange); color:var(--orange); }
+        .flow-block.wait { background:var(--amber-50); border-color:var(--amber); color:var(--amber); }
+        .flow-block.sms { background:#fef2f2; border-color:#ef4444; color:#dc2626; }
+        .flow-block.ms { background:var(--ms-blue-50); border-color:var(--ms-blue); color:var(--ms-blue-dark); }
+        .flow-arrow { color:var(--gray-300); font-size:18px; flex-shrink:0; }
+        .tip { background:var(--ms-blue-50); border:1px solid var(--ms-blue-100); border-radius:10px; padding:16px 20px; margin:16px 0; font-size:13px; color:var(--ms-blue-dark); display:flex; gap:10px; }
+        .tip svg { flex-shrink:0; margin-top:2px; }
+        .warning { background:var(--amber-50); border:1px solid #fcd34d; border-radius:10px; padding:16px 20px; margin:16px 0; font-size:13px; color:#92400e; display:flex; gap:10px; }
+        .warning svg { flex-shrink:0; margin-top:2px; }
+        .vs-card { background:#fff; border:2px solid var(--ms-blue); border-radius:14px; overflow:hidden; margin:24px 0; }
+        .vs-head { background:var(--ms-blue); color:#fff; padding:14px 24px; }
+        .vs-head h3 { font-size:15px; font-weight:700; }
+        .vs-body { padding:20px 24px; }
+        .vs-row { display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--gray-100); font-size:13px; }
+        .vs-row:last-child { border-bottom:none; }
+        .vs-row span:first-child { color:var(--gray-600); }
+        .vs-row span:last-child { font-weight:600; color:var(--ms-blue-dark); }
+        .cost-card { background:#fff; border:2px solid var(--green); border-radius:14px; overflow:hidden; margin-top:32px; }
+        .cost-head { background:var(--green); color:#fff; padding:16px 24px; text-align:center; }
+        .cost-head h3 { font-size:16px; font-weight:700; }
+        .cost-body { padding:20px 24px; }
+        .cost-row { display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--gray-100); font-size:14px; }
+        .cost-row:last-child { border-bottom:none; font-weight:700; font-size:16px; }
+        .cost-row span:last-child { color:var(--green); font-weight:700; }
+        .arch-table { width:100%; border-collapse:collapse; font-size:13px; margin-top:16px; }
+        .arch-table th { text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:1px; color:var(--gray-500); padding:8px 12px; border-bottom:2px solid var(--gray-200); }
+        .arch-table td { padding:10px 12px; border-bottom:1px solid var(--gray-100); color:var(--gray-600); }
+        .arch-table td:first-child { font-weight:600; color:var(--gray-900); }
+        .phase-tag { display:inline-block; padding:2px 8px; border-radius:4px; font-size:11px; font-weight:600; }
+        .phase-tag.now { background:var(--teal-50); color:var(--teal-dark); }
+        .phase-tag.soon { background:var(--amber-50); color:var(--amber); }
+        .phase-tag.later { background:var(--gray-100); color:var(--gray-500); }
+        .divider { height:1px; background:var(--gray-200); margin:48px 0; }
+    </style>
+</head>
+<body>
+<div class="container">
+
+<div class="hero">
+    <h1>Power Automate + HubSpot + Outlook</h1>
+    <p>Your complete pre-call automation — built entirely inside the Microsoft ecosystem you already pay for</p>
+    <div class="hero-badges">
+        <span class="hero-badge">~45 min setup</span>
+        <span class="hero-badge">No new subscriptions</span>
+        <span class="hero-badge">HubSpot as CRM</span>
+        <span class="hero-badge">Outlook native email</span>
+    </div>
+</div>
+
+<!-- Why Power Automate -->
+<div class="vs-card">
+    <div class="vs-head"><h3>Why Power Automate Over Make.com</h3></div>
+    <div class="vs-body">
+        <div class="vs-row"><span>You already have a license</span><span>No new account needed</span></div>
+        <div class="vs-row"><span>Outlook email sending</span><span>Native — zero auth setup</span></div>
+        <div class="vs-row"><span>Microsoft 365 integration</span><span>Same ecosystem, no bridging</span></div>
+        <div class="vs-row"><span>Runs inside your tenant</span><span>Your data stays in your environment</span></div>
+        <div class="vs-row"><span>Calendly connector</span><span>Built-in, official</span></div>
+        <div class="vs-row"><span>HubSpot connector</span><span>Built-in, official</span></div>
+    </div>
+</div>
+
+<!-- Architecture -->
+<div class="phase">
+    <h2>System Architecture</h2>
+    <p>Two flows. Everything feeds into HubSpot. Emails sent from your existing Outlook accounts.</p>
+    <div class="flow-diagram">
+        <div style="font-size:12px;font-weight:700;color:var(--gray-500);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px">Flow 1 — Instant (triggered by booking)</div>
+        <div class="flow-row">
+            <div class="flow-block trigger">📅 Calendly — New Event</div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-block crm">🟠 HubSpot — Create Contact + Deal</div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-block ms">📧 Outlook — Confirmation (no-reply@)</div>
+        </div>
+        <div style="font-size:12px;font-weight:700;color:var(--gray-500);text-transform:uppercase;letter-spacing:1px;margin:20px 0 12px">Flow 2 — Scheduled (runs every hour)</div>
+        <div class="flow-row">
+            <div class="flow-block trigger">⏰ Recurrence — Every 1 hour</div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-block crm">🟠 HubSpot — Get contacts where Call Status = Booked</div>
+        </div>
+        <div class="flow-row" style="padding-left:40px">
+            <div class="flow-block wait">If 23-25 hrs away</div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-block ms">📧 24hr Reminder (no-reply@)</div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-block crm">Update status → Reminded</div>
+        </div>
+        <div class="flow-row" style="padding-left:40px">
+            <div class="flow-block wait">If 2-3 hrs away</div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-block ms">📧 Day-Of (rodrigo@)</div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-block sms">📱 SMS (Twilio)</div>
+        </div>
+    </div>
+</div>
+
+<!-- ======================== -->
+<!-- PHASE 1: PREP -->
+<!-- ======================== -->
+<div class="phase">
+    <div class="phase-label setup">Phase 1 — Prep</div>
+    <h2>Before You Build</h2>
+    <p>Get HubSpot and Calendly ready so the flows have somewhere to write data.</p>
+
+    <div class="step">
+        <div class="step-num">1</div>
+        <h3>Create custom properties in HubSpot</h3>
+        <p>Go to <strong>HubSpot → Settings → Properties → Contact Properties → Create Property</strong></p>
+        <div class="code-block">
+<span class="comment">Create these 5 custom contact properties:</span>
+
+<span class="key">1. Industry</span>         <span class="val">Single-line text</span>
+<span class="key">2. Monthly Revenue</span>   <span class="val">Single-line text</span>
+<span class="key">3. Pain Points</span>       <span class="val">Multi-line text</span>
+<span class="key">4. Call Time</span>          <span class="val">Date picker</span>
+<span class="key">5. Call Status</span>        <span class="val">Dropdown:</span> <span class="str">Booked | Reminded | Showed | No-Show</span>
+        </div>
+    </div>
+
+    <div class="step">
+        <div class="step-num">2</div>
+        <h3>Create deal pipeline stages in HubSpot</h3>
+        <p>Go to <strong>HubSpot → Settings → Deals → Pipelines</strong></p>
+        <div class="code-block">
+<span class="comment">Add these stages to your Sales Pipeline:</span>
+
+<span class="str">Discovery Booked</span>  →  <span class="str">Discovery Completed</span>  →  <span class="str">Proposal Sent</span>  →  <span class="str">Closed Won</span>  →  <span class="str">Closed Lost</span>
+        </div>
+    </div>
+
+    <div class="step">
+        <div class="step-num">3</div>
+        <h3>Get your Calendly API token</h3>
+        <ul>
+            <li>Go to <strong>Calendly → Integrations → API & Webhooks</strong></li>
+            <li>Generate a <strong>Personal Access Token</strong></li>
+            <li>Copy and save it</li>
+        </ul>
+    </div>
+</div>
+
+<!-- ======================== -->
+<!-- PHASE 2: FLOW 1 -->
+<!-- ======================== -->
+<div class="phase">
+    <div class="phase-label flow-a">Phase 2 — Flow 1: New Booking</div>
+    <h2>Fires Instantly When Someone Books</h2>
+    <p>Creates the HubSpot contact, creates a deal, sends the confirmation email.</p>
+
+    <div class="step">
+        <div class="step-num">4</div>
+        <h3>Open Power Automate and create a new flow</h3>
+        <ul>
+            <li>Go to <strong>flow.microsoft.com</strong></li>
+            <li>Click <strong>"Create" → "Automated cloud flow"</strong></li>
+            <li>Name it: <strong>"Breeze — New Booking"</strong></li>
+            <li>Search for trigger: <strong>"Calendly — When an event is created"</strong></li>
+            <li>Sign into your Calendly account when prompted</li>
+        </ul>
+        <div class="tip">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+            <span>If you don't see the Calendly connector, search the connectors marketplace. It's an official connector. You may need to use the <strong>"HTTP"</strong> connector with a webhook URL as an alternative — Calendly can push events to any webhook URL.</span>
+        </div>
+    </div>
+
+    <div class="step">
+        <div class="step-num">5</div>
+        <h3>Action 1: HubSpot — Create or Update Contact</h3>
+        <ul>
+            <li>Click <strong>"+ New step"</strong> → search <strong>"HubSpot"</strong></li>
+            <li>Select <strong>"Create or update a contact (V2)"</strong></li>
+            <li>Sign into your HubSpot account when prompted</li>
+            <li>Map the fields:</li>
+        </ul>
+        <div class="code-block">
+<span class="key">Email:</span>            <span class="val">[Calendly invitee email]</span>  <span class="comment">← this is the lookup key</span>
+<span class="key">First Name:</span>       <span class="val">[Calendly invitee first name]</span>
+<span class="key">Last Name:</span>        <span class="val">[Calendly invitee last name]</span>
+<span class="key">Phone:</span>            <span class="val">[Calendly invitee phone]</span>
+<span class="key">Company:</span>          <span class="val">[Calendly answer 1]</span>  <span class="comment">← business name from intake form</span>
+<span class="key">Industry:</span>         <span class="val">[Calendly answer 2]</span>  <span class="comment">← custom property</span>
+<span class="key">Monthly Revenue:</span>  <span class="val">[Calendly answer 3]</span>  <span class="comment">← custom property</span>
+<span class="key">Pain Points:</span>      <span class="val">[Calendly answer 4]</span>  <span class="comment">← custom property</span>
+<span class="key">Call Time:</span>        <span class="val">[Calendly event start time]</span>
+<span class="key">Call Status:</span>      <span class="str">Booked</span>
+<span class="key">Lead Source:</span>      <span class="str">Website — Discovery Call</span>
+        </div>
+        <div class="tip">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+            <span><strong>"Create or Update"</strong> deduplicates on email — if this person already exists in HubSpot (e.g., from a previous inquiry), it updates their record instead of creating a duplicate.</span>
+        </div>
+    </div>
+
+    <div class="step">
+        <div class="step-num">6</div>
+        <h3>Action 2: HubSpot — Create Deal</h3>
+        <ul>
+            <li>Add step → <strong>"HubSpot — Create a deal"</strong></li>
+            <li>Map:</li>
+        </ul>
+        <div class="code-block">
+<span class="key">Deal Name:</span>        <span class="val">Discovery — [invitee first name] [invitee last name]</span>
+<span class="key">Pipeline:</span>         <span class="str">Sales Pipeline</span>
+<span class="key">Deal Stage:</span>       <span class="str">Discovery Booked</span>
+<span class="key">Associated Contact:</span> <span class="val">[Contact ID from step 5]</span>
+<span class="key">Close Date:</span>       <span class="val">[Calendly event start time]</span>
+        </div>
+    </div>
+
+    <div class="step">
+        <div class="step-num">7</div>
+        <h3>Action 3: Office 365 Outlook — Send Confirmation Email</h3>
+        <ul>
+            <li>Add step → search <strong>"Office 365 Outlook"</strong></li>
+            <li>Select <strong>"Send an email (V2)"</strong></li>
+            <li>It auto-connects to your Microsoft 365 tenant — no auth needed</li>
+        </ul>
+        <div class="code-block">
+<span class="key">From:</span>       <span class="val">no-reply@breezefinancials.com</span>
+             <span class="comment">← select from the "From" dropdown (Shared Mailbox or Send As)</span>
+<span class="key">To:</span>         <span class="val">[Calendly invitee email]</span>
+<span class="key">Subject:</span>    <span class="str">You're booked — here's what to expect on our call</span>
+<span class="key">Body:</span>       <span class="comment">(toggle to Code View, paste Email 1 HTML from emails.html)</span>
+<span class="key">Is HTML:</span>    <span class="str">Yes</span>
+        </div>
+        <div class="warning">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4M12 17h.01"/></svg>
+            <span><strong>To send from no-reply@:</strong> In Microsoft 365 Admin Center, set up <strong>no-reply@</strong> as a <strong>Shared Mailbox</strong> and grant your account "Send As" permission. Then in the Power Automate Outlook action, click "Show advanced options" and set the "From" field to no-reply@breezefinancials.com.</span>
+        </div>
+    </div>
+
+    <div class="step">
+        <div class="step-num">8</div>
+        <h3>Save and turn on Flow 1</h3>
+        <ul>
+            <li>Click <strong>"Save"</strong> at the top</li>
+            <li>The flow is live immediately — it triggers on next Calendly booking</li>
+        </ul>
+    </div>
+</div>
+
+<!-- ======================== -->
+<!-- PHASE 3: FLOW 2 -->
+<!-- ======================== -->
+<div class="phase">
+    <div class="phase-label flow-b">Phase 3 — Flow 2: Pre-Call Reminders</div>
+    <h2>Runs Every Hour, Sends Timely Reminders</h2>
+    <p>Checks HubSpot for upcoming calls and sends the right email at the right time.</p>
+
+    <div class="step">
+        <div class="step-num">9</div>
+        <h3>Create a new Scheduled flow</h3>
+        <ul>
+            <li>Go to Power Automate → <strong>"Create" → "Scheduled cloud flow"</strong></li>
+            <li>Name it: <strong>"Breeze — Pre-Call Reminders"</strong></li>
+            <li>Set to repeat: <strong>every 1 hour</strong></li>
+        </ul>
+    </div>
+
+    <div class="step">
+        <div class="step-num">10</div>
+        <h3>Action 1: HubSpot — Get Contacts</h3>
+        <ul>
+            <li>Add step → <strong>"HubSpot — Search for contacts"</strong></li>
+            <li>Filter: <strong>Call Status equals "Booked"</strong></li>
+            <li>This returns all contacts with upcoming calls who haven't been reminded yet</li>
+        </ul>
+    </div>
+
+    <div class="step">
+        <div class="step-num">11</div>
+        <h3>Add "Apply to each" loop</h3>
+        <ul>
+            <li>Add step → <strong>"Apply to each"</strong> (built-in)</li>
+            <li>Select the contacts array from the HubSpot step</li>
+            <li>Everything below runs for each contact</li>
+        </ul>
+    </div>
+
+    <div class="step">
+        <div class="step-num">12</div>
+        <h3>Add Condition: 24-hour reminder</h3>
+        <ul>
+            <li>Inside the loop, add → <strong>"Condition"</strong></li>
+            <li>Configure:</li>
+        </ul>
+        <div class="code-block">
+<span class="key">If:</span>   <span class="val">[Contact Call Time]</span> <span class="str">is greater than</span> <span class="val">addHours(utcNow(), 23)</span>
+<span class="key">AND:</span>  <span class="val">[Contact Call Time]</span> <span class="str">is less than</span>    <span class="val">addHours(utcNow(), 25)</span>
+<span class="key">AND:</span>  <span class="val">[Contact Call Status]</span> <span class="str">equals</span>         <span class="str">"Booked"</span>
+        </div>
+        <p><strong>If Yes:</strong></p>
+        <ul>
+            <li>→ <strong>Outlook — Send email</strong> from <strong>no-reply@</strong> (paste Email 2 HTML)</li>
+            <li>→ <strong>HubSpot — Update contact</strong>: set Call Status to <strong>"Reminded"</strong></li>
+        </ul>
+        <div class="tip">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+            <span>Setting status to "Reminded" prevents this contact from getting the 24hr email again on the next hourly run.</span>
+        </div>
+    </div>
+
+    <div class="step">
+        <div class="step-num">13</div>
+        <h3>Add Condition: Day-of reminder (2-3 hours before)</h3>
+        <ul>
+            <li>Add another <strong>"Condition"</strong> inside the same loop (parallel branch)</li>
+            <li>Configure:</li>
+        </ul>
+        <div class="code-block">
+<span class="key">If:</span>   <span class="val">[Contact Call Time]</span> <span class="str">is greater than</span> <span class="val">addHours(utcNow(), 2)</span>
+<span class="key">AND:</span>  <span class="val">[Contact Call Time]</span> <span class="str">is less than</span>    <span class="val">addHours(utcNow(), 3)</span>
+<span class="key">AND:</span>  <span class="val">[Contact Call Status]</span> <span class="str">equals</span>         <span class="str">"Reminded"</span>
+        </div>
+        <p><strong>If Yes:</strong></p>
+        <ul>
+            <li>→ <strong>Outlook — Send email</strong> from <strong>rodrigomedeiros@breezefinancials.com</strong> (paste Email 3 — this one is personal)</li>
+            <li>→ (Optional) <strong>Twilio — Send SMS</strong> (see Phase 4)</li>
+        </ul>
+    </div>
+
+    <div class="step">
+        <div class="step-num">14</div>
+        <h3>Save and turn on Flow 2</h3>
+        <ul>
+            <li>Click <strong>"Save"</strong></li>
+            <li>It runs automatically every hour from now on</li>
+        </ul>
+        <div class="tip">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+            <span><strong>Rescheduling works automatically:</strong> When someone reschedules in Calendly, Flow 1 fires again and updates the Call Time in HubSpot. Flow 2 then uses the new time for reminders. No duplicates because the status logic prevents re-sending.</span>
+        </div>
+    </div>
+</div>
+
+<!-- ======================== -->
+<!-- PHASE 4: SMS -->
+<!-- ======================== -->
+<div class="phase">
+    <div class="phase-label sms">Phase 4 — SMS (Optional)</div>
+    <h2>Text Message 2-3 Hours Before</h2>
+    <p>Highest-impact no-show reducer. Add to Flow 2 after the day-of email.</p>
+
+    <div class="step">
+        <div class="step-num">15</div>
+        <h3>Set up Twilio</h3>
+        <ul>
+            <li>Sign up at <strong>twilio.com</strong> (free trial = $15.50 credit)</li>
+            <li>Buy a phone number (~$1.15/month)</li>
+            <li>Note your <strong>Account SID</strong> and <strong>Auth Token</strong></li>
+        </ul>
+    </div>
+
+    <div class="step">
+        <div class="step-num">16</div>
+        <h3>Add Twilio SMS to Flow 2</h3>
+        <ul>
+            <li>In the day-of condition (step 13), after the Outlook email step</li>
+            <li>Add a <strong>Condition</strong>: "If [Contact Phone] is not empty"</li>
+            <li>If Yes → add step: <strong>"Twilio — Send Text Message (SMS)"</strong></li>
+            <li>Connect your Twilio account</li>
+        </ul>
+        <div class="code-block">
+<span class="key">From:</span> <span class="val">[your Twilio phone number]</span>
+<span class="key">To:</span>   <span class="val">[HubSpot contact phone]</span>
+<span class="key">Body:</span>
+
+<span class="str">Hey [first name] — your call with Breeze</span>
+<span class="str">Financials is in 2 hours ([time]).</span>
+<span class="str"></span>
+<span class="str">Join here: [zoom link]</span>
+<span class="str"></span>
+<span class="str">Need to reschedule? No stress:</span>
+<span class="str">[reschedule link]</span>
+        </div>
+    </div>
+</div>
+
+<!-- ======================== -->
+<!-- PHASE 5: TEST -->
+<!-- ======================== -->
+<div class="phase">
+    <div class="phase-label test">Phase 5 — Test & Go Live</div>
+    <h2>Verify Everything Works</h2>
+
+    <div class="step">
+        <div class="step-num">17</div>
+        <h3>Test Flow 1 (instant)</h3>
+        <ul>
+            <li>Book a test appointment using your personal email</li>
+            <li>Check HubSpot: new contact with all fields? Deal created at "Discovery Booked"?</li>
+            <li>Check your personal inbox: confirmation email from no-reply@?</li>
+            <li>If something failed: go to Power Automate → Flow 1 → <strong>"Run history"</strong> to see which step errored</li>
+        </ul>
+    </div>
+
+    <div class="step">
+        <div class="step-num">18</div>
+        <h3>Test Flow 2 (reminders)</h3>
+        <ul>
+            <li>In HubSpot, edit the test contact: set <strong>Call Time</strong> to 2.5 hours from now, <strong>Call Status</strong> to "Booked"</li>
+            <li>Go to Flow 2 → click <strong>"Run"</strong> (manual trigger)</li>
+            <li>Check: did you receive the day-of email from rodrigo@?</li>
+            <li>Check: did you receive the SMS?</li>
+            <li>Check HubSpot: did status update?</li>
+        </ul>
+    </div>
+
+    <div class="step">
+        <div class="step-num">19</div>
+        <h3>Go live</h3>
+        <ul>
+            <li>Both flows should already be on</li>
+            <li>Flow 1 triggers automatically on bookings</li>
+            <li>Flow 2 runs every hour automatically</li>
+            <li>Monitor <strong>"Run history"</strong> in Power Automate for the first week</li>
+            <li>Check HubSpot daily to see contacts flowing in with full data</li>
+        </ul>
+    </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ======================== -->
+<!-- GROWTH ROADMAP -->
+<!-- ======================== -->
+<div class="phase">
+    <div class="phase-label future">Growth Roadmap</div>
+    <h2>What This Scales To</h2>
+    <p>Same architecture — add flows as you grow. Each one reads/writes HubSpot.</p>
+
+    <table class="arch-table">
+        <thead><tr><th>Automation</th><th>Trigger</th><th>What It Does</th><th>When</th></tr></thead>
+        <tbody>
+            <tr><td>Pre-Call Sequence</td><td>Calendly booking</td><td>Confirmation + 24hr + day-of emails + SMS</td><td><span class="phase-tag now">Now</span></td></tr>
+            <tr><td>Post-Call Follow-Up</td><td>Deal stage → Completed</td><td>"Great talking today" + next steps</td><td><span class="phase-tag soon">Month 2</span></td></tr>
+            <tr><td>No-Show Recovery</td><td>Status still "Reminded" after call time</td><td>"We missed you" + reschedule link</td><td><span class="phase-tag soon">Month 2</span></td></tr>
+            <tr><td>Proposal Nudge</td><td>Deal at "Proposal Sent" 3+ days</td><td>Gentle follow-up</td><td><span class="phase-tag soon">Month 3</span></td></tr>
+            <tr><td>Lead Magnet Delivery</td><td>Website email form</td><td>Send Financial Health Snapshot PDF</td><td><span class="phase-tag soon">Month 3</span></td></tr>
+            <tr><td>Monthly Newsletter</td><td>Scheduled monthly</td><td>CFO tips, insights, case studies</td><td><span class="phase-tag later">Month 4+</span></td></tr>
+            <tr><td>Client Onboarding</td><td>Deal → Closed Won</td><td>Welcome sequence + doc collection</td><td><span class="phase-tag later">Month 4+</span></td></tr>
+            <tr><td>HubSpot Workflows</td><td>Replace Power Automate</td><td>Run everything from HubSpot native</td><td><span class="phase-tag later">When ready</span></td></tr>
+        </tbody>
+    </table>
+
+    <div class="tip" style="margin-top:24px">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+        <span><strong>The rule:</strong> Every new flow reads from or writes to HubSpot. If it doesn't touch HubSpot, it doesn't belong yet. This keeps your system clean and your data in one place.</span>
+    </div>
+</div>
+
+<!-- Cost -->
+<div class="cost-card">
+    <div class="cost-head"><h3>Monthly Cost</h3></div>
+    <div class="cost-body">
+        <div class="cost-row"><span>Power Automate</span><span>Already have</span></div>
+        <div class="cost-row"><span>HubSpot CRM</span><span>Already have</span></div>
+        <div class="cost-row"><span>Microsoft 365 / Outlook</span><span>Already have</span></div>
+        <div class="cost-row"><span>Twilio number + SMS</span><span>~$1.25/mo</span></div>
+        <div class="cost-row"><span>Total new cost</span><span>~$1.25/month</span></div>
+    </div>
+</div>
+
+</div>
+</body>
+</html>
