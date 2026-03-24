@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Make.com Automation Setup Guide — Breeze Financials</title>
+    <style>
+        :root {
+            --teal:#14b8a6; --teal-dark:#0d9488; --teal-50:#f0fdfa; --teal-100:#ccfbf1;
+            --purple:#6d28d9; --purple-50:#f5f3ff; --purple-100:#ede9fe;
+            --blue:#2563eb; --blue-50:#eff6ff;
+            --amber:#d97706; --amber-50:#fffbeb;
+            --gray-50:#f9fafb; --gray-100:#f3f4f6; --gray-200:#e5e7eb; --gray-400:#9ca3af; --gray-500:#6b7280; --gray-600:#4b5563; --gray-700:#374151; --gray-900:#111827;
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:ui-sans-serif,system-ui,sans-serif; background:var(--gray-50); color:var(--gray-900); line-height:1.7; -webkit-font-smoothing:antialiased; }
+        .container { max-width:760px; margin:0 auto; padding:40px 20px 80px; }
+
+        /* Header */
+        .hero { background:linear-gradient(135deg,#1e1b4b,#4c1d95); color:#fff; padding:48px 24px; border-radius:20px; text-align:center; margin-bottom:48px; }
+        .hero h1 { font-size:28px; font-weight:700; margin-bottom:8px; }
+        .hero p { font-size:15px; opacity:.8; max-width:500px; margin:0 auto; }
+        .hero-badges { display:flex; justify-content:center; gap:12px; margin-top:20px; flex-wrap:wrap; }
+        .hero-badge { background:rgba(255,255,255,.1); backdrop-filter:blur(4px); padding:6px 14px; border-radius:100px; font-size:12px; font-weight:600; }
+
+        /* Phase blocks */
+        .phase { margin-bottom:48px; }
+        .phase-label { display:inline-flex; align-items:center; gap:8px; padding:6px 16px; border-radius:100px 100px 100px 0; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:1px; margin-bottom:16px; color:#fff; }
+        .phase-label.setup { background:var(--purple); }
+        .phase-label.flow { background:var(--teal); }
+        .phase-label.sms { background:var(--amber); }
+        .phase-label.test { background:var(--blue); }
+        .phase h2 { font-size:22px; font-weight:700; margin-bottom:8px; }
+        .phase > p { font-size:14px; color:var(--gray-600); margin-bottom:24px; }
+
+        /* Step cards */
+        .step { background:#fff; border:1px solid var(--gray-200); border-radius:14px; padding:24px; margin-bottom:16px; position:relative; }
+        .step-num { position:absolute; top:-10px; left:20px; background:var(--gray-900); color:#fff; width:28px; height:28px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; }
+        .step h3 { font-size:16px; font-weight:700; margin-bottom:8px; padding-left:24px; }
+        .step p { font-size:14px; color:var(--gray-600); margin-bottom:12px; }
+        .step ul { padding-left:20px; margin-bottom:12px; }
+        .step li { font-size:14px; color:var(--gray-600); margin-bottom:4px; }
+
+        /* Code blocks */
+        .code-block { background:var(--gray-900); color:#e5e7eb; border-radius:10px; padding:16px 20px; font-family:ui-monospace,monospace; font-size:13px; line-height:1.6; overflow-x:auto; margin:12px 0; }
+        .code-block .comment { color:#6b7280; }
+        .code-block .key { color:#93c5fd; }
+        .code-block .val { color:#86efac; }
+        .code-block .str { color:#fcd34d; }
+
+        /* Visual flow diagram */
+        .flow-diagram { background:#fff; border:2px solid var(--gray-200); border-radius:14px; padding:28px; margin:24px 0; }
+        .flow-row { display:flex; align-items:center; gap:12px; margin-bottom:12px; flex-wrap:wrap; }
+        .flow-row:last-child { margin-bottom:0; }
+        .flow-block { background:var(--gray-50); border:1.5px solid var(--gray-200); border-radius:10px; padding:10px 16px; font-size:13px; font-weight:600; display:flex; align-items:center; gap:8px; }
+        .flow-block.trigger { background:var(--purple-50); border-color:var(--purple); color:var(--purple); }
+        .flow-block.action { background:var(--teal-50); border-color:var(--teal); color:var(--teal-dark); }
+        .flow-block.wait { background:var(--amber-50); border-color:var(--amber); color:var(--amber); }
+        .flow-block.sms { background:#fef2f2; border-color:#ef4444; color:#dc2626; }
+        .flow-arrow { color:var(--gray-300); font-size:18px; flex-shrink:0; }
+
+        /* Tips */
+        .tip { background:var(--teal-50); border:1px solid var(--teal-100); border-radius:10px; padding:16px 20px; margin:16px 0; font-size:13px; color:var(--teal-dark); display:flex; gap:10px; }
+        .tip svg { flex-shrink:0; margin-top:2px; }
+        .warning { background:var(--amber-50); border:1px solid #fcd34d; border-radius:10px; padding:16px 20px; margin:16px 0; font-size:13px; color:#92400e; display:flex; gap:10px; }
+
+        /* Cost summary */
+        .cost-card { background:#fff; border:2px solid var(--teal); border-radius:14px; overflow:hidden; margin-top:32px; }
+        .cost-head { background:var(--teal); color:#fff; padding:16px 24px; text-align:center; }
+        .cost-head h3 { font-size:16px; font-weight:700; }
+        .cost-body { padding:20px 24px; }
+        .cost-row { display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--gray-100); font-size:14px; }
+        .cost-row:last-child { border-bottom:none; font-weight:700; font-size:16px; }
+        .cost-row span:last-child { color:var(--teal-dark); font-weight:700; }
+    </style>
+</head>
+<body>
+<div class="container">
+
+<!-- Header -->
+<div class="hero">
+    <h1>Make.com Automation Setup</h1>
+    <p>Step-by-step guide to automate your entire pre-call email + SMS sequence for free</p>
+    <div class="hero-badges">
+        <span class="hero-badge">~30 min setup</span>
+        <span class="hero-badge">Free tier</span>
+        <span class="hero-badge">No code</span>
+    </div>
+</div>
+
+<!-- Visual overview -->
+<div class="phase">
+    <h2>The Complete Flow</h2>
+    <p>Here's what you're building — 1 trigger, 5 actions, fully automated:</p>
+    <div class="flow-diagram">
+        <div class="flow-row">
+            <div class="flow-block trigger">📅 Calendly Booking</div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-block action">✉️ Send Confirmation Email</div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-block action">📊 Log to Google Sheet</div>
+        </div>
+        <div class="flow-row">
+            <div class="flow-block wait">⏳ Wait until 24hr before</div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-block action">✉️ Send Reminder Email</div>
+        </div>
+        <div class="flow-row">
+            <div class="flow-block wait">⏳ Wait until 2-3hr before</div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-block action">✉️ Send Day-Of Email</div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-block sms">📱 Send SMS (optional)</div>
+        </div>
+    </div>
+</div>
+
+<!-- ======================== -->
+<!-- PHASE 1: ACCOUNTS -->
+<!-- ======================== -->
+<div class="phase">
+    <div class="phase-label setup">Phase 1</div>
+    <h2>Create Your Accounts</h2>
+    <p>You need 3 free accounts before building the automation.</p>
+
+    <div class="step">
+        <div class="step-num">1</div>
+        <h3>Sign up for Make.com</h3>
+        <p>Go to <strong>make.com</strong> and create a free account.</p>
+        <ul>
+            <li>Free tier: <strong>1,000 operations/month</strong></li>
+            <li>Each booking uses ~5-6 operations (trigger + emails + sheet + SMS)</li>
+            <li>That's ~160-200 bookings/month on the free plan</li>
+        </ul>
+    </div>
+
+    <div class="step">
+        <div class="step-num">2</div>
+        <h3>Connect Calendly</h3>
+        <p>In Make.com, you'll connect your Calendly account via API key:</p>
+        <ul>
+            <li>Go to <strong>Calendly → Integrations → API & Webhooks</strong></li>
+            <li>Copy your <strong>Personal Access Token</strong></li>
+            <li>In Make.com, when you add a Calendly module, paste this token</li>
+        </ul>
+    </div>
+
+    <div class="step">
+        <div class="step-num">3</div>
+        <h3>Connect Gmail (for sending emails)</h3>
+        <p>Make.com will send emails from your Gmail/Google Workspace account:</p>
+        <ul>
+            <li>When adding a Gmail module, Make.com prompts you to sign in</li>
+            <li>Authorize it to send emails on your behalf</li>
+            <li>Emails come from <strong>rodrigo@breezefinancials.com</strong> (your real address)</li>
+        </ul>
+        <div class="tip">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+            <span>Use Google Workspace (not personal Gmail) so emails come from your business domain. This dramatically improves deliverability.</span>
+        </div>
+    </div>
+
+    <div class="step">
+        <div class="step-num">4</div>
+        <h3>Create a Google Sheet for logging</h3>
+        <p>Create a new Google Sheet called <strong>"Breeze Leads"</strong> with these column headers in Row 1:</p>
+        <div class="code-block">
+<span class="key">A1:</span> <span class="val">Date Booked</span>
+<span class="key">B1:</span> <span class="val">Name</span>
+<span class="key">C1:</span> <span class="val">Email</span>
+<span class="key">D1:</span> <span class="val">Call Time</span>
+<span class="key">E1:</span> <span class="val">Status</span>
+<span class="key">F1:</span> <span class="val">Notes</span>
+        </div>
+    </div>
+</div>
+
+<!-- ======================== -->
+<!-- PHASE 2: BUILD THE FLOW -->
+<!-- ======================== -->
+<div class="phase">
+    <div class="phase-label flow">Phase 2</div>
+    <h2>Build the Automation Scenario</h2>
+    <p>In Make.com, a "Scenario" is your automation flow. Here's how to build it step by step.</p>
+
+    <div class="step">
+        <div class="step-num">5</div>
+        <h3>Create a new Scenario</h3>
+        <ul>
+            <li>Click <strong>"Create a new scenario"</strong> from your Make.com dashboard</li>
+            <li>You'll see a blank canvas with a "+" icon in the center</li>
+        </ul>
+    </div>
+
+    <div class="step">
+        <div class="step-num">6</div>
+        <h3>Add trigger: Calendly → Watch Events</h3>
+        <ul>
+            <li>Click the "+" → search for <strong>"Calendly"</strong></li>
+            <li>Select <strong>"Watch Events"</strong> (this fires when someone books)</li>
+            <li>Connect your Calendly account (paste the API token from Step 2)</li>
+            <li>Set scope to <strong>"User"</strong> and select your event type</li>
+        </ul>
+        <div class="tip">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+            <span>Run the scenario once manually first — Make.com will pull a sample booking so you can see the available data fields (name, email, event time, etc.)</span>
+        </div>
+    </div>
+
+    <div class="step">
+        <div class="step-num">7</div>
+        <h3>Add action: Gmail → Send Email (Confirmation)</h3>
+        <ul>
+            <li>Click "+" after the Calendly module → search <strong>"Gmail"</strong></li>
+            <li>Select <strong>"Send an Email"</strong></li>
+            <li>Configure:</li>
+        </ul>
+        <div class="code-block">
+<span class="key">To:</span>      <span class="val">{{Calendly invitee email}}</span>
+<span class="key">Subject:</span> <span class="str">You're booked — here's what to expect on our call</span>
+<span class="key">Body:</span>    <span class="comment">(paste Email 1 HTML from emails.html)</span>
+<span class="comment">         Replace {{first_name}} with the Calendly "invitee name" field</span>
+<span class="comment">         Replace {{date_and_time}} with the Calendly "event start time" field</span>
+<span class="comment">         Replace {{zoom_link}} with the Calendly "location" field</span>
+        </div>
+        <div class="tip">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+            <span>Toggle "HTML content" to ON in the Gmail module. Then paste the full email HTML. Map the Calendly fields by clicking the field and selecting from the dropdown.</span>
+        </div>
+    </div>
+
+    <div class="step">
+        <div class="step-num">8</div>
+        <h3>Add action: Google Sheets → Add Row</h3>
+        <ul>
+            <li>Click "+" → search <strong>"Google Sheets"</strong></li>
+            <li>Select <strong>"Add a Row"</strong></li>
+            <li>Select your "Breeze Leads" spreadsheet</li>
+            <li>Map columns:</li>
+        </ul>
+        <div class="code-block">
+<span class="key">Date Booked:</span> <span class="val">{{now}}</span>
+<span class="key">Name:</span>        <span class="val">{{Calendly invitee name}}</span>
+<span class="key">Email:</span>       <span class="val">{{Calendly invitee email}}</span>
+<span class="key">Call Time:</span>   <span class="val">{{Calendly event start time}}</span>
+<span class="key">Status:</span>      <span class="str">Booked</span>
+<span class="key">Notes:</span>       <span class="val">{{Calendly invitee questions/answers}}</span>
+        </div>
+    </div>
+
+    <div class="step">
+        <div class="step-num">9</div>
+        <h3>Add: Sleep → Wait until 24 hours before</h3>
+        <ul>
+            <li>Click "+" → search <strong>"Sleep"</strong> (built-in Make.com tool)</li>
+            <li>Select <strong>"Sleep"</strong></li>
+            <li>Set the delay using a formula:</li>
+        </ul>
+        <div class="code-block">
+<span class="comment">/* Calculate: event time minus 24 hours minus current time */</span>
+<span class="key">Delay:</span> <span class="val">{{dateDifference(addHours(Calendly.event_start; -24); now; "minutes")}}</span>
+        </div>
+        <div class="warning">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4M12 17h.01"/></svg>
+            <span><strong>Important:</strong> Make.com free tier has a max execution time of 5 minutes. For longer delays, use the <strong>"Schedule"</strong> approach instead: create a separate scenario that runs every hour, checks the Google Sheet for upcoming calls, and sends the email if the call is within 24 hours. This is more reliable anyway.</span>
+        </div>
+    </div>
+
+    <div class="step">
+        <div class="step-num">10</div>
+        <h3>Better approach: Two separate scenarios</h3>
+        <p>Instead of one long scenario with sleeps, build <strong>two scenarios</strong>:</p>
+        <p><strong>Scenario A — "New Booking" (runs on Calendly trigger):</strong></p>
+        <ul>
+            <li>Calendly Watch Events → Send Confirmation Email → Log to Google Sheet</li>
+            <li>This runs instantly when someone books</li>
+        </ul>
+        <p style="margin-top:16px"><strong>Scenario B — "Pre-Call Reminders" (runs every hour on a schedule):</strong></p>
+        <ul>
+            <li>Trigger: <strong>Schedule → Every 1 hour</strong></li>
+            <li>Action: <strong>Google Sheets → Search Rows</strong> where Call Time is in the future</li>
+            <li>Filter: If call is <strong>23-25 hours from now</strong> → Send Email 2 (24hr reminder)</li>
+            <li>Filter: If call is <strong>2-3 hours from now</strong> → Send Email 3 + SMS</li>
+        </ul>
+        <div class="tip">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+            <span>This is the production-grade approach. It handles rescheduling (the Google Sheet always has the latest time), never times out, and you can see/debug every step in the sheet.</span>
+        </div>
+    </div>
+</div>
+
+<!-- ======================== -->
+<!-- PHASE 3: SMS -->
+<!-- ======================== -->
+<div class="phase">
+    <div class="phase-label sms">Phase 3 (Optional)</div>
+    <h2>Add SMS Reminders via Twilio</h2>
+    <p>Text message 2-3 hours before the call. This is the highest-impact no-show reducer.</p>
+
+    <div class="step">
+        <div class="step-num">11</div>
+        <h3>Create a Twilio account</h3>
+        <ul>
+            <li>Go to <strong>twilio.com</strong> → Sign up (free trial includes $15 credit)</li>
+            <li>Buy a phone number (~$1.15/month) — this is the number texts come from</li>
+            <li>Note your <strong>Account SID</strong>, <strong>Auth Token</strong>, and <strong>phone number</strong></li>
+        </ul>
+    </div>
+
+    <div class="step">
+        <div class="step-num">12</div>
+        <h3>Add Twilio to Scenario B</h3>
+        <ul>
+            <li>In your "Pre-Call Reminders" scenario, after Email 3</li>
+            <li>Add module: <strong>Twilio → Send an SMS</strong></li>
+            <li>Connect your Twilio account</li>
+            <li>Configure:</li>
+        </ul>
+        <div class="code-block">
+<span class="key">From:</span> <span class="val">{{your Twilio phone number}}</span>
+<span class="key">To:</span>   <span class="val">{{phone from Google Sheet}}</span>
+<span class="key">Body:</span>
+<span class="str">Hey {{name}} — your call with Breeze Financials is in 2 hours ({{time}}).</span>
+<span class="str"></span>
+<span class="str">Join here: {{zoom_link}}</span>
+<span class="str"></span>
+<span class="str">Need to reschedule? No stress: {{reschedule_link}}</span>
+        </div>
+        <div class="tip">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+            <span>Only send SMS if the person provided a phone number. Add a <strong>Filter</strong> before the Twilio module: "Phone is not empty."</span>
+        </div>
+    </div>
+</div>
+
+<!-- ======================== -->
+<!-- PHASE 4: TEST -->
+<!-- ======================== -->
+<div class="phase">
+    <div class="phase-label test">Phase 4</div>
+    <h2>Test Everything</h2>
+
+    <div class="step">
+        <div class="step-num">13</div>
+        <h3>Test Scenario A (instant confirmation)</h3>
+        <ul>
+            <li>Turn on Scenario A</li>
+            <li>Book a test appointment through your own Calendly link using a personal email</li>
+            <li>Check: Did you receive the confirmation email? Did a row appear in Google Sheets?</li>
+            <li>If not: click "Run once" in Make.com to see which step failed</li>
+        </ul>
+    </div>
+
+    <div class="step">
+        <div class="step-num">14</div>
+        <h3>Test Scenario B (reminders)</h3>
+        <ul>
+            <li>Add a test row to your Google Sheet with a call time 2 hours from now</li>
+            <li>Turn on Scenario B and click "Run once"</li>
+            <li>Check: Did you receive the day-of email and/or SMS?</li>
+            <li>Adjust the time filters if needed</li>
+        </ul>
+    </div>
+
+    <div class="step">
+        <div class="step-num">15</div>
+        <h3>Go live</h3>
+        <ul>
+            <li>Set Scenario A scheduling to <strong>"Immediately"</strong> (runs as data arrives)</li>
+            <li>Set Scenario B scheduling to <strong>"Every 1 hour"</strong></li>
+            <li>Turn both scenarios ON</li>
+            <li>Monitor your Google Sheet for the first few real bookings</li>
+        </ul>
+        <div class="tip">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+            <span>Make.com shows execution history for every scenario run. If something fails, you'll see exactly which step broke and why. Check this weekly for the first month.</span>
+        </div>
+    </div>
+</div>
+
+<!-- Cost summary -->
+<div class="cost-card">
+    <div class="cost-head"><h3>Monthly Cost Summary</h3></div>
+    <div class="cost-body">
+        <div class="cost-row"><span>Make.com (1,000 ops/month)</span><span>Free</span></div>
+        <div class="cost-row"><span>Gmail / Google Workspace</span><span>Already have</span></div>
+        <div class="cost-row"><span>Google Sheets</span><span>Free</span></div>
+        <div class="cost-row"><span>Twilio phone number</span><span>$1.15/mo</span></div>
+        <div class="cost-row"><span>Twilio SMS (10 bookings × $0.01)</span><span>~$0.10/mo</span></div>
+        <div class="cost-row"><span>Total</span><span>~$1.25/month</span></div>
+    </div>
+</div>
+
+</div>
+</body>
+</html>
