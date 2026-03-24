@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>You're Booked — Breeze Financials</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --teal-50:#f0fdfa; --teal-100:#ccfbf1; --teal-500:#14b8a6; --teal-600:#0d9488; --teal-700:#0f766e; --teal-800:#115e59;
+            --gray-50:#f9fafb; --gray-100:#f3f4f6; --gray-200:#e5e7eb; --gray-400:#9ca3af; --gray-500:#6b7280; --gray-600:#4b5563; --gray-700:#374151; --gray-900:#111827;
+            --green:#3d8b6e; --green-bg:rgba(61,139,110,.06);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:ui-sans-serif,system-ui,sans-serif; background:var(--gray-50); color:var(--gray-900); line-height:1.6; -webkit-font-smoothing:antialiased; min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:24px; }
+        .pf { font-family:'Playfair Display',Georgia,serif; }
+
+        .card { background:#fff; border-radius:20px; box-shadow:0 20px 60px rgba(0,0,0,.08); max-width:600px; width:100%; overflow:hidden; }
+
+        /* Header */
+        .header { background:linear-gradient(135deg,var(--teal-500),var(--teal-600)); padding:40px 36px; text-align:center; position:relative; overflow:hidden; }
+        .header::before { content:''; position:absolute; top:-40%; right:-20%; width:300px; height:300px; background:radial-gradient(circle,rgba(255,255,255,.08),transparent 70%); border-radius:50%; }
+        .check-circle { width:72px; height:72px; background:rgba(255,255,255,.15); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 20px; backdrop-filter:blur(4px); }
+        .header h1 { color:#fff; font-size:28px; font-weight:700; margin-bottom:6px; }
+        .header p { color:rgba(255,255,255,.8); font-size:15px; }
+
+        /* Body */
+        .body { padding:36px; }
+
+        /* Call Details Card */
+        .call-details { background:var(--gray-50); border:1px solid var(--gray-200); border-radius:14px; padding:24px; margin-bottom:28px; }
+        .call-details h2 { font-size:14px; font-weight:700; color:var(--gray-500); text-transform:uppercase; letter-spacing:1px; margin-bottom:16px; }
+        .detail-row { display:flex; align-items:flex-start; gap:14px; margin-bottom:14px; }
+        .detail-row:last-child { margin-bottom:0; }
+        .detail-icon { width:36px; height:36px; background:var(--teal-50); border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+        .detail-label { font-size:12px; color:var(--gray-500); }
+        .detail-val { font-size:15px; font-weight:600; color:var(--gray-900); }
+
+        /* What to Expect */
+        .expect { margin-bottom:28px; }
+        .expect h2 { font-size:18px; font-weight:700; margin-bottom:16px; }
+        .expect-steps { display:flex; flex-direction:column; gap:0; }
+        .expect-step { display:flex; gap:16px; position:relative; }
+        .step-line { display:flex; flex-direction:column; align-items:center; }
+        .step-dot { width:10px; height:10px; background:var(--teal-500); border-radius:50%; flex-shrink:0; margin-top:6px; }
+        .step-connector { width:2px; flex:1; background:var(--teal-100); margin:4px 0; }
+        .expect-step:last-child .step-connector { display:none; }
+        .step-content { padding-bottom:20px; }
+        .step-content h3 { font-size:14px; font-weight:700; color:var(--gray-900); margin-bottom:2px; }
+        .step-content p { font-size:13px; color:var(--gray-600); }
+
+        /* Prep Checklist */
+        .prep { background:var(--green-bg); border:1px solid rgba(61,139,110,.12); border-radius:14px; padding:24px; margin-bottom:28px; }
+        .prep h2 { font-size:16px; font-weight:700; color:var(--green); margin-bottom:14px; display:flex; align-items:center; gap:8px; }
+        .prep-list { display:flex; flex-direction:column; gap:10px; }
+        .prep-item { display:flex; align-items:flex-start; gap:10px; font-size:14px; color:var(--gray-700); }
+        .prep-item .check { width:20px; height:20px; border:2px solid var(--gray-300); border-radius:5px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; cursor:pointer; transition:all .2s; }
+        .prep-item .check.checked { background:var(--teal-500); border-color:var(--teal-500); }
+        .prep-item .check svg { opacity:0; transition:opacity .15s; }
+        .prep-item .check.checked svg { opacity:1; }
+        .prep-note { font-size:12px; color:var(--gray-500); margin-top:10px; font-style:italic; }
+
+        /* CTA buttons */
+        .cta-row { display:flex; gap:12px; margin-bottom:20px; }
+        @media (max-width:480px) { .cta-row { flex-direction:column; } }
+        .btn { display:flex; align-items:center; justify-content:center; gap:8px; padding:12px 20px; border-radius:12px; font-size:14px; font-weight:600; font-family:inherit; cursor:pointer; border:none; transition:all .2s; flex:1; text-decoration:none; }
+        .btn-primary { background:var(--teal-500); color:#fff; }
+        .btn-primary:hover { background:var(--teal-600); }
+        .btn-outline { background:#fff; color:var(--gray-700); border:1.5px solid var(--gray-200); }
+        .btn-outline:hover { border-color:var(--teal-300); background:var(--teal-50); }
+
+        /* Reschedule */
+        .reschedule { text-align:center; padding:20px 0 0; border-top:1px solid var(--gray-100); }
+        .reschedule p { font-size:13px; color:var(--gray-500); margin-bottom:8px; }
+        .reschedule a { color:var(--teal-600); font-weight:600; font-size:13px; }
+
+        /* Footer */
+        .footer { text-align:center; padding:20px 36px 28px; }
+        .footer p { font-size:12px; color:var(--gray-400); }
+        .footer a { color:var(--teal-600); }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <!-- Header -->
+    <div class="header">
+        <div class="check-circle">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+        </div>
+        <h1>You're All Set!</h1>
+        <p>Your discovery call has been booked. Check your email for the calendar invite.</p>
+    </div>
+
+    <div class="body">
+        <!-- Call Details -->
+        <div class="call-details">
+            <h2>Your Call Details</h2>
+            <div class="detail-row">
+                <div class="detail-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--teal-600)" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div>
+                <div><span class="detail-label">Date & Time</span><br><span class="detail-val" id="callDate">Check your calendar invite for exact time</span></div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--teal-600)" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+                <div><span class="detail-label">Duration</span><br><span class="detail-val">15 minutes</span></div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--teal-600)" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
+                <div><span class="detail-label">Where</span><br><span class="detail-val">Zoom — link will be in your calendar invite</span></div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--teal-600)" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
+                <div><span class="detail-label">With</span><br><span class="detail-val">Breeze Financials CFO Team</span></div>
+            </div>
+        </div>
+
+        <!-- What to Expect -->
+        <div class="expect">
+            <h2>What Happens Between Now and the Call</h2>
+            <div class="expect-steps">
+                <div class="expect-step">
+                    <div class="step-line"><div class="step-dot"></div><div class="step-connector"></div></div>
+                    <div class="step-content"><h3>Right now</h3><p>Calendar invite + Zoom link arriving in your inbox</p></div>
+                </div>
+                <div class="expect-step">
+                    <div class="step-line"><div class="step-dot"></div><div class="step-connector"></div></div>
+                    <div class="step-content"><h3>24 hours before</h3><p>We'll send a quick reminder with a simple prep checklist (nothing heavy)</p></div>
+                </div>
+                <div class="expect-step">
+                    <div class="step-line"><div class="step-dot"></div><div class="step-connector"></div></div>
+                    <div class="step-content"><h3>Day of the call</h3><p>One last reminder with your Zoom link so it's easy to find</p></div>
+                </div>
+                <div class="expect-step">
+                    <div class="step-line"><div class="step-dot"></div></div>
+                    <div class="step-content"><h3>On the call</h3><p>15 minutes focused entirely on your business. No pitch, no slides — just an honest conversation about your numbers and whether we can help.</p></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Optional Prep -->
+        <div class="prep">
+            <h2><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg> Optional Prep (Not Required)</h2>
+            <div class="prep-list">
+                <div class="prep-item"><div class="check" onclick="this.classList.toggle('checked')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></div>Have a rough idea of your monthly revenue</div>
+                <div class="prep-item"><div class="check" onclick="this.classList.toggle('checked')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></div>Know your biggest financial frustration right now</div>
+                <div class="prep-item"><div class="check" onclick="this.classList.toggle('checked')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></div>Think about one financial question you wish you had the answer to</div>
+            </div>
+            <p class="prep-note">Don't stress about this — we'll guide the conversation. Just show up.</p>
+        </div>
+
+        <!-- CTAs -->
+        <div class="cta-row">
+            <a href="https://breezefinancials.com" class="btn btn-primary">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>
+                Back to Breeze
+            </a>
+            <a href="https://calendly.com/rodrigomedeiros-breezefinancials/30min" class="btn btn-outline">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                Add to Calendar
+            </a>
+        </div>
+
+        <!-- Reschedule -->
+        <div class="reschedule">
+            <p>Something come up? No stress at all.</p>
+            <a href="https://calendly.com/rodrigomedeiros-breezefinancials/30min">Reschedule anytime — no penalty, no guilt &rarr;</a>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Breeze Financials &bull; Fractional CFO for Toronto Small Businesses<br><a href="mailto:rodrigomedeiros@breezefinancials.com">rodrigomedeiros@breezefinancials.com</a> &bull; <a href="tel:+16478535968">(647) 853-5968</a></p>
+    </div>
+</div>
+
+</body>
+</html>

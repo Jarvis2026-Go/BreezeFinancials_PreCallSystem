@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Breeze Financials — Pre-Call Email Templates</title>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:ui-sans-serif,system-ui,sans-serif; background:#f3f4f6; color:#111827; padding:40px 20px; }
+        .page-head { text-align:center; margin-bottom:48px; }
+        .page-head h1 { font-size:28px; font-weight:700; margin-bottom:8px; }
+        .page-head p { font-size:15px; color:#6b7280; }
+        .template-wrapper { max-width:640px; margin:0 auto 60px; }
+        .template-label { display:inline-flex; align-items:center; gap:8px; background:#14b8a6; color:#fff; padding:6px 16px; border-radius:100px 100px 100px 0; font-size:13px; font-weight:700; margin-bottom:12px; }
+        .template-meta { font-size:13px; color:#6b7280; margin-bottom:16px; }
+        .template-meta strong { color:#111827; }
+        .copy-btn { display:inline-flex; align-items:center; gap:6px; background:#fff; border:1.5px solid #e5e7eb; padding:8px 16px; border-radius:8px; font-size:13px; font-weight:600; color:#374151; cursor:pointer; margin-bottom:16px; transition:all .2s; }
+        .copy-btn:hover { border-color:#14b8a6; color:#0d9488; }
+
+        /* Email preview */
+        .email { background:#fff; border-radius:12px; box-shadow:0 4px 20px rgba(0,0,0,.06); overflow:hidden; border:1px solid #e5e7eb; }
+        .email-bar { background:#f9fafb; padding:14px 24px; border-bottom:1px solid #e5e7eb; font-size:12px; color:#9ca3af; }
+        .email-bar strong { color:#374151; }
+        .email-body { padding:32px 28px; font-size:15px; color:#374151; line-height:1.7; }
+        .email-body h2 { font-size:20px; font-weight:700; color:#111827; margin-bottom:16px; }
+        .email-body p { margin-bottom:16px; }
+        .email-body .highlight { background:#f0fdfa; border-left:3px solid #14b8a6; padding:16px 20px; border-radius:0 8px 8px 0; margin:20px 0; font-size:14px; }
+        .email-body .highlight strong { color:#0d9488; }
+        .email-body ul { padding-left:20px; margin:12px 0 16px; }
+        .email-body li { margin-bottom:6px; font-size:14px; }
+        .email-body .btn-link { display:inline-block; background:#14b8a6; color:#fff; padding:12px 28px; border-radius:8px; font-weight:600; font-size:14px; text-decoration:none; margin:8px 0 16px; }
+        .email-body .sig { margin-top:24px; padding-top:20px; border-top:1px solid #e5e7eb; font-size:14px; color:#6b7280; }
+        .email-body .sig strong { color:#111827; display:block; }
+        .email-body .reschedule-box { background:#fffbeb; border:1px solid #fcd34d; border-radius:8px; padding:14px 18px; margin:16px 0; font-size:14px; }
+        .email-body .reschedule-box a { color:#0d9488; font-weight:600; }
+        .divider { height:1px; background:#e5e7eb; margin:60px 0; }
+    </style>
+</head>
+<body>
+
+<div class="page-head">
+    <h1>Pre-Call Email Sequence</h1>
+    <p>3 emails that warm up your lead, reduce no-shows, and make the call more productive</p>
+</div>
+
+<!-- ========================================== -->
+<!-- EMAIL 1: INSTANT CONFIRMATION -->
+<!-- ========================================== -->
+<div class="template-wrapper">
+    <div class="template-label">Email 1 — Sent Immediately After Booking</div>
+    <div class="template-meta">
+        <strong>Subject:</strong> You're booked — here's what to expect on our call<br>
+        <strong>Send:</strong> Immediately (triggered by Calendly booking)<br>
+        <strong>Goal:</strong> Confirm, build excitement, set expectations
+    </div>
+    <div class="email">
+        <div class="email-bar"><strong>From:</strong> Breeze Financials &lt;rodrigo@breezefinancials.com&gt; &nbsp;&nbsp;|&nbsp;&nbsp; <strong>To:</strong> {{first_name}} &lt;{{email}}&gt;</div>
+        <div class="email-body">
+            <h2>Hey {{first_name}} — you're on the calendar!</h2>
+            <p>Thanks for booking a discovery call with our team. We're looking forward to learning about {{business_name}} and seeing if we can help.</p>
+
+            <div class="highlight">
+                <strong>Your call details:</strong><br>
+                📅 {{date_and_time}}<br>
+                ⏱ 15 minutes<br>
+                💻 Zoom — {{zoom_link}}<br>
+            </div>
+
+            <p><strong>What we'll cover:</strong></p>
+            <ul>
+                <li>Where your business is today financially</li>
+                <li>The blind spots we typically find for {{industry}} businesses</li>
+                <li>Whether CFO-level support makes sense for your stage</li>
+            </ul>
+
+            <p>This isn't a sales call. It's an honest 15-minute conversation about your numbers. If we can help, we'll tell you. If we can't, we'll tell you that too — and point you in the right direction.</p>
+
+            <div class="highlight">
+                <strong>Optional prep (not required):</strong><br>
+                ☐ Have a rough idea of your monthly revenue<br>
+                ☐ Think about your biggest financial frustration right now<br>
+                ☐ One financial question you wish you had the answer to<br><br>
+                <em>Don't stress about this. Just show up.</em>
+            </div>
+
+            <div class="reschedule-box">
+                Something come up? No stress — <a href="{{reschedule_link}}">reschedule here</a> anytime. We'd rather move it than lose you.
+            </div>
+
+            <p>See you soon.</p>
+
+            <div class="sig">
+                <strong>The Breeze Financials Team</strong>
+                Fractional CFO for Toronto Small Businesses<br>
+                <a href="https://breezefinancials.com">breezefinancials.com</a> · (647) 853-5968
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="divider" style="max-width:640px;margin:60px auto"></div>
+
+<!-- ========================================== -->
+<!-- EMAIL 2: 24 HOURS BEFORE -->
+<!-- ========================================== -->
+<div class="template-wrapper">
+    <div class="template-label">Email 2 — 24 Hours Before the Call</div>
+    <div class="template-meta">
+        <strong>Subject:</strong> Tomorrow: your free financial review with Breeze<br>
+        <strong>Send:</strong> 24 hours before call time<br>
+        <strong>Goal:</strong> Remind, reduce no-shows, light prep nudge
+    </div>
+    <div class="email">
+        <div class="email-bar"><strong>From:</strong> Breeze Financials &lt;rodrigo@breezefinancials.com&gt; &nbsp;&nbsp;|&nbsp;&nbsp; <strong>To:</strong> {{first_name}} &lt;{{email}}&gt;</div>
+        <div class="email-body">
+            <h2>Quick heads up — we're on for tomorrow</h2>
+            <p>Hey {{first_name}},</p>
+            <p>Just a friendly reminder that we have your discovery call tomorrow.</p>
+
+            <div class="highlight">
+                📅 <strong>{{date_and_time}}</strong><br>
+                💻 <a href="{{zoom_link}}">Join Zoom Meeting</a>
+            </div>
+
+            <p>We've already reviewed the info you shared about {{business_name}}. Here's what we're planning to focus on:</p>
+
+            <ul>
+                <li>A quick look at your financial blind spots based on what you told us</li>
+                <li>How businesses like yours in {{industry}} typically find hidden savings</li>
+                <li>Whether there's a fit — and if not, we'll be upfront about it</li>
+            </ul>
+
+            <p><strong>One thing that might help:</strong> If you have a recent bank statement or P&L handy, pull it up on your screen. Not required — but it helps us give you more specific insights during the call.</p>
+
+            <div class="reschedule-box">
+                Can't make it? Totally fine — <a href="{{reschedule_link}}">reschedule in one click</a>. No penalty, no guilt. We'd rather you pick a time that works than skip it.
+            </div>
+
+            <p>Looking forward to it.</p>
+
+            <div class="sig">
+                <strong>The Breeze Financials Team</strong>
+                Fractional CFO for Toronto Small Businesses<br>
+                <a href="https://breezefinancials.com">breezefinancials.com</a> · (647) 853-5968
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="divider" style="max-width:640px;margin:60px auto"></div>
+
+<!-- ========================================== -->
+<!-- EMAIL 3: 2-3 HOURS BEFORE -->
+<!-- ========================================== -->
+<div class="template-wrapper">
+    <div class="template-label">Email 3 — 2-3 Hours Before the Call</div>
+    <div class="template-meta">
+        <strong>Subject:</strong> See you at {{time}} — here's your Zoom link<br>
+        <strong>Send:</strong> 2-3 hours before call time<br>
+        <strong>Goal:</strong> Final nudge, easy Zoom access, last-chance reschedule
+    </div>
+    <div class="email">
+        <div class="email-bar"><strong>From:</strong> Breeze Financials &lt;rodrigo@breezefinancials.com&gt; &nbsp;&nbsp;|&nbsp;&nbsp; <strong>To:</strong> {{first_name}} &lt;{{email}}&gt;</div>
+        <div class="email-body">
+            <h2>See you in a few hours!</h2>
+            <p>Hey {{first_name}},</p>
+            <p>Your discovery call is coming up today at <strong>{{time}}</strong>. Here's everything you need:</p>
+
+            <a href="{{zoom_link}}" class="btn-link">Join Zoom Meeting →</a>
+
+            <p>This will be a relaxed 15-minute conversation. No prep needed — we'll guide it. You'll walk away with at least one insight about your business whether we work together or not.</p>
+
+            <div class="reschedule-box">
+                Running behind today? <a href="{{reschedule_link}}">Reschedule here</a> — we get it, you're running a business. Pick a time that works better and we'll be there.
+            </div>
+
+            <p>See you soon, {{first_name}}.</p>
+
+            <div class="sig">
+                <strong>The Breeze Financials Team</strong>
+                Fractional CFO for Toronto Small Businesses<br>
+                <a href="https://breezefinancials.com">breezefinancials.com</a> · (647) 853-5968
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="divider" style="max-width:640px;margin:60px auto"></div>
+
+<!-- ========================================== -->
+<!-- SETUP GUIDE -->
+<!-- ========================================== -->
+<div class="template-wrapper">
+    <div class="template-label" style="background:#374151;">Setup Guide — How to Automate This</div>
+
+    <div class="email" style="border:2px solid #374151;">
+        <div class="email-body">
+            <h2>How to Wire This Up (Cheapest Options)</h2>
+
+            <p><strong>Option A: Calendly + Zapier (Free tier works)</strong></p>
+            <ul>
+                <li><strong>Trigger:</strong> Calendly "Invitee Created" event</li>
+                <li><strong>Action 1:</strong> Send Email 1 immediately via Gmail/Mailgun</li>
+                <li><strong>Action 2:</strong> Create a Google Sheet row with booking data</li>
+                <li>For Emails 2 & 3: Use Zapier's "Delay" step (24hr before, 2hr before) → Send email</li>
+                <li><strong>Cost:</strong> Free for up to 100 tasks/month on Zapier</li>
+            </ul>
+
+            <p><strong>Option B: Calendly + Make.com (Free tier, more powerful)</strong></p>
+            <ul>
+                <li>Same trigger/action pattern as Zapier</li>
+                <li>Make.com gives you more free operations (1,000/month vs 100)</li>
+                <li>Can also send SMS via Twilio integration for the day-of reminder</li>
+            </ul>
+
+            <p><strong>Option C: Calendly Workflows (Paid, simplest)</strong></p>
+            <ul>
+                <li>Calendly Pro ($12/mo) includes custom email workflows</li>
+                <li>Set up reminder emails directly in Calendly — no code needed</li>
+                <li>Can't fully customize the design, but handles timing automatically</li>
+            </ul>
+
+            <p><strong>Option D: ConvertKit / Mailchimp (Free tier, most control)</strong></p>
+            <ul>
+                <li>Webhook from Calendly → adds subscriber to email automation sequence</li>
+                <li>Full HTML email design control</li>
+                <li>Can tag by industry, revenue range, pain points from intake form</li>
+                <li>Build nurture sequences for no-shows and post-call follow-up too</li>
+            </ul>
+
+            <p><strong>For SMS reminders (day-of):</strong></p>
+            <ul>
+                <li><strong>Twilio:</strong> ~$0.01/text, integrate via Zapier/Make.com</li>
+                <li><strong>Calendly Pro:</strong> Has built-in SMS reminders</li>
+                <li><strong>Google Voice:</strong> Free, but manual (not automated)</li>
+            </ul>
+
+            <p><strong>Template variables to replace:</strong></p>
+            <ul>
+                <li><code>{{first_name}}</code> — from booking form</li>
+                <li><code>{{email}}</code> — from booking form</li>
+                <li><code>{{business_name}}</code> — from intake step 2</li>
+                <li><code>{{industry}}</code> — from intake step 2</li>
+                <li><code>{{date_and_time}}</code> — from Calendly event</li>
+                <li><code>{{time}}</code> — just the time portion</li>
+                <li><code>{{zoom_link}}</code> — from Calendly event</li>
+                <li><code>{{reschedule_link}}</code> — from Calendly event</li>
+            </ul>
+
+            <p><strong>Confirmation page redirect:</strong><br>In Calendly settings → "Confirmation Page" → select "Redirect to an external site" → enter your deployed confirmation.html URL.</p>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
